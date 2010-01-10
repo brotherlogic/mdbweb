@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<div id="title">
+<div id="boxed">
+<h1>%label.getShowName%</h1>
+</div>
+</div>
+<div id="boxed">
+<table width=80%>
+%for record in label.getRecords%
+      <tr>
+   <td wicket:id="catno">%record.getCatNo%</td>
+   <td wicket:id="author">%record.getAuthor%</td>
+   <td wicket:id="title">%record.getTitle%</td>
+   </tr>
+%endfor%
+   </table>
+   </div>
+    </body>
+</html>

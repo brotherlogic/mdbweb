@@ -25,6 +25,18 @@
       <version>2.0</version>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>uk.co.brotherlogic.mdb</groupId>
+      <artifactId>mdbcore</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <version>8.3-603.jdbc4</version>
+      <artifactId>postgresql</artifactId>
+    </dependency>
+    
   </dependencies>
   
   <scm>
@@ -38,6 +50,22 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
+        <configuration>
+          <scanTargetPatterns>
+            <scanTargetPattern>
+              <directory>src/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
+                <include>**/*.properties</include>
+              </includes>
+              <excludes>
+                <exclude>**/myspecial.xml</exclude>
+                <exclude>**/myspecial.properties</exclude>
+              </excludes>
+            </scanTargetPattern>
+          </scanTargetPatterns>
+        </configuration>
+        
       </plugin>
       <plugin>
     <groupId>org.apache.maven.plugins</groupId>
