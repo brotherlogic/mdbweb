@@ -28,8 +28,8 @@
   </dependencies>
   
   <scm>
-   <connection>scm:git:git://github.com/brotherlogic/jarpur.git</connection>
-   <url>scm:git:git://github.com/brotherlogic/jarpur.git</url>
+   <connection>scm:git:git://github.com/BrotherLogic/Jarpur.git</connection>
+   <url>scm:git:git://github.com/BrotherLogic/Jarpur.git</url>
   </scm>
   
   <build>
