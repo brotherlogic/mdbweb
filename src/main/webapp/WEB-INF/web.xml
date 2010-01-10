@@ -6,7 +6,7 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>simple</servlet-name>
-    <servlet-class>uk.co.brotherlogic.jarpur.App</servlet-class>
+    <servlet-class>uk.co.brotherlogic.jarpur.FrontOfHouse</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
