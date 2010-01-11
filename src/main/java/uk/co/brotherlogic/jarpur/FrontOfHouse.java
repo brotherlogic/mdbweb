@@ -3,6 +3,8 @@ package uk.co.brotherlogic.jarpur;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +28,9 @@ public class FrontOfHouse extends HttpServlet
 {
 	List<Route> routingTable;
 	String baseAddress = "http://localhost:8080/jarpur/";
+	public static ServletContext context;
+
+	Route resourceRoute = new Route("resource/", null);
 
 	public FrontOfHouse()
 	{
@@ -44,6 +50,7 @@ public class FrontOfHouse extends HttpServlet
 		try
 		{
 			props.load(new FileInputStream(new File(getServletContext().getRealPath("WEB-INF") + "/routing.properties")));
+			context = getServletContext();
 		}
 		catch (IOException e)
 		{
@@ -59,40 +66,57 @@ public class FrontOfHouse extends HttpServlet
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
 	{
-		res.setContentType("text/html");
-
-		PrintWriter out = res.getWriter();
-
-		/* Display some response to the user */
 		String params = req.getRequestURL().toString();
 		String request = params.substring(baseAddress.length(), params.length());
 
-		// Build the routing table if we need to
-		if (routingTable == null)
-			buildRoutingTable();
-
-		Route matcher = null;
-		for (Route route : routingTable)
+		if (resourceRoute.matches(request))
 		{
-			if (route.matches(request))
+			// We're after a resource rather than a page - just serve it
+			OutputStream os = res.getOutputStream();
+			byte[] buffer = new byte[256];
+			InputStream is = new FileInputStream(new File(getServletContext().getRealPath("WEB-INF") + "/resources/"
+					+ resourceRoute.getRemaining(request)));
+			int read = is.read(buffer, 0, buffer.length);
+			while (read > 0)
 			{
-				matcher = route;
-				break;
+				os.write(buffer, 0, read);
+				read = is.read(buffer, 0, buffer.length);
 			}
+			is.close();
+			os.close();
 		}
-
-		if (matcher != null)
+		else
 		{
-			Page handler = matcher.getHandler();
-			String remainder = matcher.getRemaining(request);
-			String[] elems = remainder.split("/");
-			Map<String, String> parameters = new TreeMap<String, String>();
-			for (int i = 0; i < elems.length; i += 2)
-				parameters.put(elems[i], elems[i + 1]);
+			// Build the routing table if we need to
+			if (routingTable == null)
+				buildRoutingTable();
 
-			out.println(handler.buildPage(parameters));
+			res.setContentType("text/html");
+			PrintWriter out = res.getWriter();
 
-			out.close();
+			Route matcher = null;
+			for (Route route : routingTable)
+			{
+				if (route.matches(request))
+				{
+					matcher = route;
+					break;
+				}
+			}
+
+			if (matcher != null)
+			{
+				Page handler = matcher.getHandler();
+				String remainder = matcher.getRemaining(request);
+				String[] elems = remainder.split("/");
+				Map<String, String> parameters = new TreeMap<String, String>();
+				for (int i = 0; i < elems.length; i += 2)
+					parameters.put(elems[i], elems[i + 1]);
+
+				out.println(handler.buildPage(parameters));
+
+				out.close();
+			}
 		}
 	}
 }

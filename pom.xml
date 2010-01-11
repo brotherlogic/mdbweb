@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.co.brotherlogic.jarpur</groupId>
   <artifactId>jarpur</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <version>0.2-SNAPSHOT</version>
   <name>jarpur</name>
   <url>http://maven.apache.org</url>
@@ -45,28 +45,39 @@
   </scm>
   
   <build>
-    <finalName>simple-webapp</finalName>
+    <finalName>MDBWeb</finalName>
     <plugins>
+      
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <scanTargetPatterns>
-            <scanTargetPattern>
-              <directory>src/resources</directory>
+          <webResources>
+            <resource>
+              <directory>src/main/java/</directory>
+              <targetPath>WEB-INF</targetPath>
               <includes>
-                <include>**/*.xml</include>
-                <include>**/*.properties</include>
+                <include>**/*.html</include>
               </includes>
-              <excludes>
-                <exclude>**/myspecial.xml</exclude>
-                <exclude>**/myspecial.properties</exclude>
-              </excludes>
-            </scanTargetPattern>
-          </scanTargetPatterns>
+            </resource>
+            <resource>
+              <directory>src/resources/</directory>
+              <targetPath>WEB-INF/resources/</targetPath>
+              <includes>
+                <include>**/*</include>
+              </includes>
+            </resource>
+          </webResources>
         </configuration>
         
+        <version>2.0.2</version>
       </plugin>
+            
       <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
