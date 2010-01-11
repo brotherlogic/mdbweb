@@ -9,24 +9,27 @@ import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.mdb.label.GetLabels;
 import uk.co.brotherlogic.mdb.label.Label;
 
-public class LabelPage extends Page
-{
+public class LabelPage extends Page {
 	@Override
-	protected String buildPage(Map<String, String> params) throws IOException
-	{
-		try
-		{
+	protected String buildPage(Map<String, String> params) throws IOException {
+		try {
 			int labelID = Integer.parseInt(params.get("id"));
 			Label label = GetLabels.create().getLabel(labelID);
 
 			Map<String, Object> paramMap = new TreeMap<String, Object>();
 			paramMap.put("label", label);
+			System.err.println("Storing label = " + label.getName() + " ["
+					+ labelID + "]");
 
 			return buildPageFromTemplate(paramMap);
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			throw new IOException(e);
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		Label label = GetLabels.create().getLabel(9);
+		System.err.println("Storing label = " + label.getName() + " [" + label
+				+ "]");
 	}
 }
