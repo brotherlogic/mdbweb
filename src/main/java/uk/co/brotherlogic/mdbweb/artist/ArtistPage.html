@@ -1,18 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-</head>
+<head>  	
+        <title>Label: %%label.getName%%</title>
+        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+    </head>
+    <body>
 <body>
-
+<div id="title">
+<div id="boxed">
+<h1>%%artist.getShowName%%</h1>
+</div>
+</div>
 <div id="boxed">
 <h2>Appears On:</h2>
 <table width=80%>
-<span wicket:id="records">
+%%for record in artist.getRecords%%
       <tr>
-   <td wicket:id="author">Hermel, Robert & Renaud, Henri</td>
-   <td wicket:id="title">Jazz Mobile</td>
-   <td wicket:id="format">Jazz Mobile</td>
+   <td>%%record.getAuthor%%</td>
+   <td wicket:id="title">%%record.getTitle%%</td>
+   <td wicket:id="format">%%record.getFormat%%</td>
    </tr>
+ %%endfor%%
    </span>
    </table>
    </div>
