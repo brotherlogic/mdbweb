@@ -23,6 +23,12 @@ public abstract class Page {
 
 	DateFormat df = DateFormat.getDateInstance();
 
+	private static LinkTable lTable;
+
+	public static void setLinkTable(LinkTable table) {
+		lTable = table;
+	}
+
 	protected String buildPageFromTemplate(Map<String, Object> paramMap)
 			throws IOException {
 		String className = this.getClass().getCanonicalName();
@@ -159,6 +165,20 @@ public abstract class Page {
 			if (buffer.substring(grpStart + 2, grpEnd - 2).startsWith("for ")) {
 				replaceStack.push(replaceWithForLoop(buffer, grpStart, grpEnd,
 						paramMap));
+			} else if (buffer.substring(grpStart + 2, grpEnd - 2).startsWith(
+					"link")) {
+				if (buffer.substring(grpStart + 7, grpEnd - 2).startsWith(
+						"resource"))
+					replaceStack
+							.push(new StringReplace(grpStart, grpEnd,
+									LinkTable.add
+											+ "/"
+											+ buffer.substring(grpStart + 7,
+													grpEnd - 2)));
+				else
+					replaceStack.push(new StringReplace(grpStart, grpEnd,
+							lTable.resolveLink(resolve(buffer.substring(
+									grpStart + 7, grpEnd - 2), paramMap))));
 			} else {
 				String replaceText = convert(resolve(buffer.substring(
 						grpStart + 2, grpEnd - 2), paramMap));

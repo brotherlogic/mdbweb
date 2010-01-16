@@ -49,6 +49,11 @@ public class FrontOfHouse extends HttpServlet {
 			props.load(new FileInputStream(new File(getServletContext()
 					.getRealPath("WEB-INF")
 					+ "/routing.properties")));
+			Properties lProps = new Properties();
+			lProps.load(new FileInputStream(new File(getServletContext()
+					.getRealPath("WEB-INF")
+					+ "/links.properties")));
+			Page.setLinkTable(new LinkTable(lProps));
 			context = getServletContext();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,6 +70,7 @@ public class FrontOfHouse extends HttpServlet {
 			throws IOException, ServletException {
 
 		System.err.println("BASE ADDRESS");
+		LinkTable.add = req.getContextPath();
 
 		if (baseAddress.length() == 0) {
 			// Build up the base address
@@ -77,7 +83,8 @@ public class FrontOfHouse extends HttpServlet {
 
 		String params = req.getRequestURL().toString();
 
-		System.err.println("PARAMS = " + req.getRequestURL().toString());
+		System.err.println("PARAMS = " + req.getRequestURL().toString()
+				+ " and " + params);
 		String request = params
 				.substring(baseAddress.length(), params.length());
 
