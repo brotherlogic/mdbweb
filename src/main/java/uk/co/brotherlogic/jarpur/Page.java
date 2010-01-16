@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Stack;
@@ -18,6 +20,8 @@ public abstract class Page {
 			throws IOException;
 
 	Pattern percMatcher = Pattern.compile("(\\%\\%.*?\\%\\%)");
+
+	DateFormat df = DateFormat.getDateInstance();
 
 	protected String buildPageFromTemplate(Map<String, Object> paramMap)
 			throws IOException {
@@ -128,9 +132,8 @@ public abstract class Page {
 				replaceStack.push(replaceWithForLoop(buffer, grpStart, grpEnd,
 						paramMap));
 			} else {
-				String replaceText = resolve(
-						buffer.substring(grpStart + 2, grpEnd - 2), paramMap)
-						.toString();
+				String replaceText = convert(resolve(buffer.substring(
+						grpStart + 2, grpEnd - 2), paramMap));
 				replaceStack.push(new StringReplace(grpStart, grpEnd,
 						replaceText));
 			}
@@ -141,6 +144,14 @@ public abstract class Page {
 		while (!replaceStack.isEmpty()) {
 			replaceStack.pop().apply(buffer);
 		}
+	}
+
+	protected String convert(Object obj) {
+		System.err.println(obj.getClass() + " is the type");
+		if (obj instanceof Calendar)
+			return df.format(((Calendar) obj).getTime());
+		else
+			return obj.toString();
 	}
 }
 
