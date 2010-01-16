@@ -22,42 +22,42 @@
    <li id="bold">Released On:</li>
    <li>%%record.getReleaseYear%%</li>
    <li id="bold">Label:</li>
-   %%for label in record.getLabels%%
-      <li>%%	label.getName%%</li>
-   %%endfor%%	
+   %%for label in record.getLabels :label%%
+      <li>%%label.getName%%</li>
+   %%endfor:label%%	
    <li id="bold">Cat Nos:</li>
-   %%for catno in record.getCatNos%%
+   %%for catno in record.getCatNos :catno%%
       <li>%%catno%%</li>
-   %%endfor%%
+   %%endfor:catno%%
          <li id="bold">Format:</li>
-   <li wicket:id="format">FORMAT NAME</li>
+   <li>%%record.getFormat.getName%%</li>
    <li id="bold">Category:</li>
-   <li wicket:id="category">CATEGORY NAME</li>
+   <li>%%record.getCategory.getCatName%%</li>
 </ul>
 </div>
 
 <div id="boxed">
-<span wicket:id="tracknums">
-	<span wicket:id="tracklabel">TRACK NUMBER LABELS</span>   
+%%for number in artistmap.keySet :tracknum%%
+	<span>%%number%%</span>   
     <ul>
-    	<span wicket:id="trackartists">
-      		<li wicket:id="artist">ARTIST NAME</li>
-      	</span>
+    	%%for artist in artistmap.get(number) :artistnum%%
+      		<li>%%artist.getShowName%%</li>
+      	%%endfor:artistnum%%
     </ul>
-</span>  
+%%endfor:tracknum%%
 </div>
 </div>
 
 <div id="tracks">
 <div id="boxed">
 <TABLE width="85%">
-	<span wicket:id="tracks">   
+	%%for track in record.getTracks :track%%   
 		<TR>
-			<TD valign="top" id="track-odd" wicket:id="tracknumber">1</TD>
-			<TD valign="top" id="track-odd" wicket:id="trackname">Tiny Circles</TD>
-			<TD valign="top" id="track-odd" wicket:id="tracktime"></TD>
+			<TD valign="top" id="track-odd" wicket:id="tracknumber">%%track.getTrackNumber%%</TD>
+			<TD valign="top" id="track-odd" wicket:id="trackname">%%track.getTitle%%</TD>
+			<TD valign="top" id="track-odd" wicket:id="tracktime">%%track.getLengthInSeconds%%</TD>
 		</TR>
-	</span>
+	%%endfor:track%%
 </TABLE>
 </DIV>
 </DIV>  

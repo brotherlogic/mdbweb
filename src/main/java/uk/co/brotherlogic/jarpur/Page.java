@@ -43,7 +43,38 @@ public abstract class Page {
 		return template_data.toString();
 	}
 
-	protected Object resolveMethod(Object obj, String methodName) {
+	protected Object resolveMethodWithParameter(Object obj, String methodName,
+			Map<String, Object> paramMap) {
+		int firstBracket = methodName.indexOf('(');
+		String method = methodName.substring(0, firstBracket);
+		String parameter = methodName.substring(firstBracket + 1, methodName
+				.length() - 1);
+		System.err.println("Resolving: " + method + " with " + parameter);
+
+		Method[] methodArr = obj.getClass().getMethods();
+		for (Method method2 : methodArr) {
+			if (method2.getName().equals(method)) {
+				try {
+					return method2.invoke(obj, new Object[] { paramMap
+							.get(parameter) });
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return null;
+	}
+
+	protected Object resolveMethod(Object obj, String methodName,
+			Map<String, Object> paramMap) {
+
+		if (methodName.contains("("))
+			return resolveMethodWithParameter(obj, methodName, paramMap);
 		try {
 			Class cls = obj.getClass();
 			Method m = cls.getMethod(methodName, new Class[0]);
@@ -70,7 +101,8 @@ public abstract class Page {
 			for (int i = 1; i < elems.length; i++) {
 				System.err.println("START = " + obj + "(" + obj.getClass()
 						+ ")");
-				obj = resolveMethod(obj, elems[i]);
+				System.err.println("RESOLVING: " + elems[i]);
+				obj = resolveMethod(obj, elems[i], paramMap);
 				System.err.println("END = " + obj + "(" + obj.getClass() + ")");
 			}
 			System.err.println("RESOLVING TO: " + obj);
@@ -80,20 +112,26 @@ public abstract class Page {
 		return "UNABLE TO REPLACE";
 	}
 
-	Pattern forPattern = Pattern.compile("for (.*?) in (.*?)%");
+	Pattern forPattern = Pattern.compile("for (.*?) in (.*?) :(.*?)%");
 
 	protected StringReplace replaceWithForLoop(StringBuffer buffer,
 			int startPoint, int endPoint, Map<String, Object> paramMap) {
-		// Find the end of the for loop
-		int startOfEnd = buffer.indexOf("%%endfor%%");
-		String replacementText = buffer.substring(endPoint, startOfEnd);
-
-		String replaceString = "";
 
 		// Get the properties of the for loop
 		Matcher forMatch = forPattern.matcher(buffer.substring(startPoint,
 				endPoint));
 		if (forMatch.find()) {
+
+			String label = forMatch.group(3);
+
+			// Find the end of the for loop
+			int startOfEnd = buffer.indexOf("%%endfor:" + label + "%%");
+			System.err.println("REPLACING: " + label + " (" + startOfEnd + ","
+					+ endPoint);
+			String replacementText = buffer.substring(endPoint, startOfEnd);
+
+			String replaceString = "";
+
 			String newParam = forMatch.group(1);
 			String collection = forMatch.group(2);
 
@@ -111,11 +149,13 @@ public abstract class Page {
 			}
 
 			paramMap.remove(newParam);
+
+			// Do the replace
+			return new StringReplace(startPoint, startOfEnd + 11
+					+ label.length(), replaceString);
 		}
 
-		// Do the replace
-		return new StringReplace(startPoint, startOfEnd + 10, replaceString);
-
+		return null;
 	}
 
 	protected void doReplace(StringBuffer buffer, Map<String, Object> paramMap) {
