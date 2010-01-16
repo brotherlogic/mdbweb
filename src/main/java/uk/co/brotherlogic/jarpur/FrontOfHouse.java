@@ -28,7 +28,7 @@ import uk.co.brotherlogic.mdb.Connect;
  */
 public class FrontOfHouse extends HttpServlet {
 	List<Route> routingTable;
-	String baseAddress = "http://localhost:8080/jarpur/";
+	private static String baseAddress = "";
 	public static ServletContext context;
 
 	Route resourceRoute = new Route("resource/", null);
@@ -63,7 +63,21 @@ public class FrontOfHouse extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
+
+		System.err.println("BASE ADDRESS");
+
+		if (baseAddress.length() == 0) {
+			// Build up the base address
+			String base = req.getContextPath();
+			baseAddress = req.getRequestURL().substring(0,
+					req.getRequestURL().indexOf(base) + base.length())
+					+ "/";
+			System.err.println("BASE = " + baseAddress);
+		}
+
 		String params = req.getRequestURL().toString();
+
+		System.err.println("PARAMS = " + req.getRequestURL().toString());
 		String request = params
 				.substring(baseAddress.length(), params.length());
 
@@ -102,7 +116,7 @@ public class FrontOfHouse extends HttpServlet {
 				String remainder = matcher.getRemaining(request);
 				String[] elems = remainder.split("/");
 				Map<String, String> parameters = new TreeMap<String, String>();
-				if (elems.length > 2)
+				if (elems.length >= 2)
 					for (int i = 0; i < elems.length; i += 2)
 						parameters.put(elems[i], elems[i + 1]);
 
