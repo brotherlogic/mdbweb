@@ -49,7 +49,6 @@ public abstract class Page {
 		String method = methodName.substring(0, firstBracket);
 		String parameter = methodName.substring(firstBracket + 1, methodName
 				.length() - 1);
-		System.err.println("Resolving: " + method + " with " + parameter);
 
 		Method[] methodArr = obj.getClass().getMethods();
 		for (Method method2 : methodArr) {
@@ -99,13 +98,8 @@ public abstract class Page {
 		if (paramMap.containsKey(elems[0])) {
 			Object obj = paramMap.get(elems[0]);
 			for (int i = 1; i < elems.length; i++) {
-				System.err.println("START = " + obj + "(" + obj.getClass()
-						+ ")");
-				System.err.println("RESOLVING: " + elems[i]);
 				obj = resolveMethod(obj, elems[i], paramMap);
-				System.err.println("END = " + obj + "(" + obj.getClass() + ")");
 			}
-			System.err.println("RESOLVING TO: " + obj);
 			return obj;
 		}
 
@@ -126,8 +120,6 @@ public abstract class Page {
 
 			// Find the end of the for loop
 			int startOfEnd = buffer.indexOf("%%endfor:" + label + "%%");
-			System.err.println("REPLACING: " + label + " (" + startOfEnd + ","
-					+ endPoint);
 			String replacementText = buffer.substring(endPoint, startOfEnd);
 
 			String replaceString = "";
@@ -135,10 +127,6 @@ public abstract class Page {
 			String newParam = forMatch.group(1);
 			String collection = forMatch.group(2);
 
-			System.err.println("FROM: "
-					+ buffer.substring(startPoint, endPoint));
-			System.err.println("Building collection = " + collection + " and "
-					+ newParam);
 			Collection<Object> objects = (Collection<Object>) resolve(
 					collection, paramMap);
 			for (Object object : objects) {
@@ -187,7 +175,6 @@ public abstract class Page {
 	}
 
 	protected String convert(Object obj) {
-		System.err.println(obj.getClass() + " is the type");
 		if (obj instanceof Calendar)
 			return df.format(((Calendar) obj).getTime());
 		else

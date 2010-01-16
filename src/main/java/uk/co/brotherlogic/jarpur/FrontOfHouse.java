@@ -102,10 +102,14 @@ public class FrontOfHouse extends HttpServlet {
 				String remainder = matcher.getRemaining(request);
 				String[] elems = remainder.split("/");
 				Map<String, String> parameters = new TreeMap<String, String>();
-				for (int i = 0; i < elems.length; i += 2)
-					parameters.put(elems[i], elems[i + 1]);
+				if (elems.length > 2)
+					for (int i = 0; i < elems.length; i += 2)
+						parameters.put(elems[i], elems[i + 1]);
 
+				long sTime = System.currentTimeMillis();
 				out.println(handler.buildPage(parameters));
+				System.err.println("Build time = "
+						+ (System.currentTimeMillis() - sTime) + "ms");
 
 				out.close();
 			}

@@ -1,11 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
-    <head>  	
-        <title>Music Database</title>
-        <style type="text/css" media="all">
-    	  @import url("/resource/main.css");
-	    </style>
+<head>  	
+        <title>Record: %%record.getTitle%%</title>
+        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
     </head>
+  <body
     <body>
     	<div id="title">
 <div id="boxed">
@@ -15,12 +14,12 @@
 <div id="boxed">
 	<h2>Simon To Listen To:</h2>
 	<ul>
-	<li><a href="#" wicket:id="vinyllink"><div wicket:id="vinyl">Hello</div></a></li>
-	<li><a href="#" wicket:id="digitallink"><div wicket:id="digital">Digital Record</div></a></li>
+	<li><a><div>%%record.getNumber%%: %%record.getAuthor%% - %%record.getTitle%% [%%record.getFormat.getName%%]</div></a></li>
+	<li><a><div>%%cd.getNumber%%: %%cd.getAuthor%% - %%cd.getTitle%% [%%cd.getFormat.getName%%]</div></a></li>
 	</ul>
 	<h2>Simon To Rip:</h2>
 	<ul>
-	<li><a href="#" wicket:id="riplink"><div wicket:id="rip">Hello</div></a></li>
+	<li><a><div>%%rip.getNumber%%: %%rip.getAuthor%% - %%rip.getTitle%% [%%rip.getFormat.getName%%]</div></a></li>
 	</ul>
 </div>
 </body>
