@@ -1,14 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-  </head>
+<head>  	
+        <title>Record: %%record.getTitle%%</title>
+        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+    </head>
   <body>
 
     
 <div id="title">
 <div id="boxed">
-   <h1 wicket:id="title">Tiny Circles</h1>
-   <h2 wicket:id="author">Wolf People</h2>
+   <h1>%%record.getTitle%%</h1>
+   <h2>%%record.getAuthor%%</h2>
 </div>
 </div>
 
@@ -16,17 +18,17 @@
 <div id="boxed">
 <ul>
    <li id="bold">Bought On:</li>
-   <li wicket:id="bought_date">BOUGHT_DATE</li>
+   <li>%%record.getDate%%</li>
    <li id="bold">Released On:</li>
-   <li wicket:id="release_year">RELEASE_YEAR</li>
+   <li>%%record.getReleaseYear%%</li>
    <li id="bold">Label:</li>
-   <span wicket:id="labels">
-      <li wicket:id="label">LABELS</li>
-   </span>
+   %%for label in record.getLabels%%
+      <li>%%	label.getName%%</li>
+   %%endfor%%	
    <li id="bold">Cat Nos:</li>
-   <span wicket:id="catnos">
-      <li wicket:id="catno" >CATALOGUE NUMBER</li>
-   </span>
+   %%for catno in record.getCatNos%%
+      <li>%%catno%%</li>
+   %%endfor%%
          <li id="bold">Format:</li>
    <li wicket:id="format">FORMAT NAME</li>
    <li id="bold">Category:</li>
