@@ -20,7 +20,7 @@ public class PageParser {
 
 	private final Pattern elementFinder = Pattern.compile("(\\%\\%.*?\\%\\%)");
 
-	public Replacer parsePage(String pageText) {
+	public Replacer parsePage(Object ref, String pageText) {
 
 		Replacer allReplacements = new ContainerReplacer();
 
@@ -64,7 +64,7 @@ public class PageParser {
 					if (foundCount == 0) {
 						if (firstParam.startsWith("for")) {
 							allReplacements.addReplacer(new ForReplacer(
-									paramText, parsePage(pageText
+									paramText, parsePage(ref, pageText
 											.substring(startPoint
 													+ paramText.length() + 4,
 													startList.get(j)))));
@@ -73,7 +73,7 @@ public class PageParser {
 									+ "%%endfor%%".length();
 						} else if (firstParam.startsWith("if")) {
 							allReplacements.addReplacer(new IfReplacer(
-									paramText, parsePage(pageText
+									paramText, parsePage(ref, pageText
 											.substring(startPoint
 													+ paramText.length() + 4,
 													startList.get(j)))));
@@ -112,7 +112,7 @@ public class PageParser {
 			pageText += line;
 
 		PageParser parser = new PageParser();
-		Replacer fullPage = parser.parsePage(pageText);
+		Replacer fullPage = parser.parsePage(null, pageText);
 		fullPage.print("");
 	}
 }

@@ -139,9 +139,9 @@ public abstract class Page {
 
 	protected String doReplace(String pageText, Map<String, Object> paramMap) {
 		PageParser parser = new PageParser();
-		Replacer repl = parser.parsePage(pageText);
+		Replacer repl = parser.parsePage(this, pageText);
 		repl.print("");
-		return repl.process(paramMap);
+		return repl.process(this, paramMap);
 	}
 
 	protected String convert(Object obj) {

@@ -9,6 +9,7 @@ import java.util.Map;
 public abstract class Replacer {
 
 	private final List<Replacer> replacers = new LinkedList<Replacer>();
+	private Object refObj;
 
 	public List<Replacer> getReplacers() {
 		return replacers;
@@ -25,10 +26,11 @@ public abstract class Replacer {
 		}
 	}
 
-	public String process(Map<String, Object> objectMap) {
+	public String process(Object ref, Map<String, Object> objectMap) {
+		refObj = ref;
 		StringBuffer buffer = new StringBuffer();
 		for (Replacer repl : replacers) {
-			buffer.append(repl.process(objectMap));
+			buffer.append(repl.process(ref, objectMap));
 		}
 		return buffer.toString();
 	}
@@ -40,6 +42,10 @@ public abstract class Replacer {
 
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
 			Map<String, Object> paramMap) {
+
+		Thread.dumpStack();
+		System.err.println("RESOLVE WITH PARAM = " + methodName + " => " + obj);
+
 		int firstBracket = methodName.indexOf('(');
 		String method = methodName.substring(0, firstBracket);
 		String parameter = methodName.substring(firstBracket + 1, methodName
@@ -96,6 +102,11 @@ public abstract class Replacer {
 				obj = resolveMethod(obj, elems[i], paramMap);
 			}
 			return obj;
+		} else {
+			// Try to resolve using the base
+			Object obj = resolveMethod(refObj, replace, paramMap);
+			if (obj != null)
+				return obj;
 		}
 
 		return "UNABLE TO REPLACE";

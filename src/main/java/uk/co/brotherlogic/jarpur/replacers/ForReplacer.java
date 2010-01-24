@@ -13,14 +13,14 @@ public class ForReplacer extends Replacer {
 	Pattern forPattern = Pattern.compile("for (.*) in (.*?)%");
 
 	@Override
-	public String process(Map<String, Object> objectMap) {
+	public String process(Object ref, Map<String, Object> objectMap) {
 		System.err.println("RESOLVING: " + forResolve);
 		Collection col = (Collection) resolve(forResolve, objectMap);
 		StringBuffer buffer = new StringBuffer();
 		for (Object obj : col) {
 			objectMap.put(forName, obj);
 			for (Replacer repl : getReplacers())
-				buffer.append(repl.process(objectMap));
+				buffer.append(repl.process(ref, objectMap));
 			objectMap.remove(forName);
 		}
 		return buffer.toString();

@@ -16,7 +16,7 @@ public class SimpleReplacer extends Replacer {
 	}
 
 	@Override
-	public String process(Map<String, Object> objectMap) {
+	public String process(Object ref, Map<String, Object> objectMap) {
 
 		if (replacement.startsWith("link:resource"))
 			return "/jarpur/" + replacement.substring(5);

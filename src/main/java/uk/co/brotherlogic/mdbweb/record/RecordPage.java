@@ -32,6 +32,11 @@ public class RecordPage extends Page {
 		}
 	}
 
+	public Boolean relatedExists(Track track) {
+		System.err.println("RELATED TRACKS");
+		return false;
+	}
+
 	private Map<String, List<Artist>> splitArtists(Record rec)
 			throws SQLException {
 		Map<String, List<Artist>> ret = new TreeMap<String, List<Artist>>();

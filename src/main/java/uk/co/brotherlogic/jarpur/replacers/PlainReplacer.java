@@ -11,7 +11,7 @@ public class PlainReplacer extends Replacer {
 	}
 
 	@Override
-	public String process(Map<String, Object> objectMap) {
+	public String process(Object ref, Map<String, Object> objectMap) {
 		return text;
 	}
 
