@@ -10,6 +10,10 @@ public abstract class Replacer {
 
 	private final List<Replacer> replacers = new LinkedList<Replacer>();
 
+	public List<Replacer> getReplacers() {
+		return replacers;
+	}
+
 	public void addReplacer(Replacer add) {
 		replacers.add(add);
 	}
@@ -21,7 +25,13 @@ public abstract class Replacer {
 		}
 	}
 
-	public abstract String process(Map<String, Object> objectMap);
+	public String process(Map<String, Object> objectMap) {
+		StringBuffer buffer = new StringBuffer();
+		for (Replacer repl : replacers) {
+			buffer.append(repl.process(objectMap));
+		}
+		return buffer.toString();
+	}
 
 	@Override
 	public String toString() {

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uk.co.brotherlogic.jarpur.replacers.SimpleReplacer;
 import uk.co.brotherlogic.mdb.Connect;
 
 /**
@@ -53,7 +54,7 @@ public class FrontOfHouse extends HttpServlet {
 			lProps.load(new FileInputStream(new File(getServletContext()
 					.getRealPath("WEB-INF")
 					+ "/links.properties")));
-			Page.setLinkTable(new LinkTable(lProps));
+			SimpleReplacer.setLinkTable(new LinkTable(lProps));
 			context = getServletContext();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -123,6 +124,7 @@ public class FrontOfHouse extends HttpServlet {
 				String remainder = matcher.getRemaining(request);
 				String[] elems = remainder.split("/");
 				Map<String, String> parameters = new TreeMap<String, String>();
+				System.err.println("REMAIN = " + remainder);
 				if (elems.length >= 2)
 					for (int i = 0; i < elems.length; i += 2)
 						parameters.put(elems[i], elems[i + 1]);

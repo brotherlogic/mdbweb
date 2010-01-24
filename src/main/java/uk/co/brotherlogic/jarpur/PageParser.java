@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import uk.co.brotherlogic.jarpur.replacers.ContainerReplacer;
 import uk.co.brotherlogic.jarpur.replacers.ForReplacer;
+import uk.co.brotherlogic.jarpur.replacers.IfReplacer;
 import uk.co.brotherlogic.jarpur.replacers.PlainReplacer;
 import uk.co.brotherlogic.jarpur.replacers.Replacer;
 import uk.co.brotherlogic.jarpur.replacers.SimpleReplacer;
@@ -70,6 +71,15 @@ public class PageParser {
 
 							startPoint = startList.get(j)
 									+ "%%endfor%%".length();
+						} else if (firstParam.startsWith("if")) {
+							allReplacements.addReplacer(new IfReplacer(
+									paramText, parsePage(pageText
+											.substring(startPoint
+													+ paramText.length() + 4,
+													startList.get(j)))));
+
+							startPoint = startList.get(j)
+									+ "%%endif%%".length();
 						} else
 							System.err.println("Unknown: " + paramText);
 						i = j;
@@ -78,12 +88,16 @@ public class PageParser {
 					}
 				}
 			} else {
-				allReplacements.addReplacer(new SimpleReplacer(paramText));
-				startPoint += paramText.length() + 4;
+				allReplacements.addReplacer(new SimpleReplacer(paramText
+						.substring(2, paramText.length() - 2)));
+				startPoint += paramText.length();
 			}
 
 			i++;
 		}
+
+		allReplacements.addReplacer(new PlainReplacer(pageText
+				.substring(startPoint)));
 
 		return allReplacements;
 	}
@@ -92,7 +106,7 @@ public class PageParser {
 		String pageText = "";
 		BufferedReader reader = new BufferedReader(
 				new FileReader(
-						"/home/simon/local/code/mdbweb/src/main/java/uk/co/brotherlogic/mdbweb/record/RecordPage.html"));
+						"/Users/simon/local/code/jarpur/src/main/java/uk/co/brotherlogic/mdbweb/HomePage.html"));
 		for (String line = reader.readLine(); line != null; line = reader
 				.readLine())
 			pageText += line;

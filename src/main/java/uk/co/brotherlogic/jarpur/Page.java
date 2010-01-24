@@ -9,11 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Stack;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import uk.co.brotherlogic.jarpur.replacers.Replacer;
 
 public abstract class Page {
 	protected abstract String buildPage(Map<String, String> params)
@@ -22,12 +21,6 @@ public abstract class Page {
 	Pattern percMatcher = Pattern.compile("(\\%\\%.*?\\%\\%)");
 
 	DateFormat df = DateFormat.getDateInstance();
-
-	private static LinkTable lTable;
-
-	public static void setLinkTable(LinkTable table) {
-		lTable = table;
-	}
 
 	protected String buildPageFromTemplate(Map<String, Object> paramMap)
 			throws IOException {
@@ -44,9 +37,7 @@ public abstract class Page {
 			template_data.append(line);
 
 		// Apply the template
-		doReplace(template_data, paramMap);
-
-		return template_data.toString();
+		return doReplace(template_data.toString(), paramMap);
 	}
 
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
@@ -114,84 +105,43 @@ public abstract class Page {
 
 	Pattern forPattern = Pattern.compile("for (.*?) in (.*?) :(.*?)%");
 
-	protected StringReplace replaceWithForLoop(StringBuffer buffer,
-			int startPoint, int endPoint, Map<String, Object> paramMap) {
+	/*
+	 * protected StringReplace replaceWithForLoop(StringBuffer buffer, int
+	 * startPoint, int endPoint, Map<String, Object> paramMap) {
+	 * 
+	 * // Get the properties of the for loop Matcher forMatch =
+	 * forPattern.matcher(buffer.substring(startPoint, endPoint)); if
+	 * (forMatch.find()) {
+	 * 
+	 * String label = forMatch.group(3);
+	 * 
+	 * // Find the end of the for loop int startOfEnd =
+	 * buffer.indexOf("%%endfor:" + label + "%%"); String replacementText =
+	 * buffer.substring(endPoint, startOfEnd);
+	 * 
+	 * String replaceString = "";
+	 * 
+	 * String newParam = forMatch.group(1); String collection =
+	 * forMatch.group(2);
+	 * 
+	 * Collection<Object> objects = (Collection<Object>) resolve( collection,
+	 * paramMap); for (Object object : objects) { StringBuffer temp = new
+	 * StringBuffer(replacementText); paramMap.put(newParam, object);
+	 * doReplace(temp, paramMap); replaceString += temp.toString(); }
+	 * 
+	 * paramMap.remove(newParam);
+	 * 
+	 * // Do the replace return new StringReplace(startPoint, startOfEnd + 11 +
+	 * label.length(), replaceString); }
+	 * 
+	 * return null; }
+	 */
 
-		// Get the properties of the for loop
-		Matcher forMatch = forPattern.matcher(buffer.substring(startPoint,
-				endPoint));
-		if (forMatch.find()) {
-
-			String label = forMatch.group(3);
-
-			// Find the end of the for loop
-			int startOfEnd = buffer.indexOf("%%endfor:" + label + "%%");
-			String replacementText = buffer.substring(endPoint, startOfEnd);
-
-			String replaceString = "";
-
-			String newParam = forMatch.group(1);
-			String collection = forMatch.group(2);
-
-			Collection<Object> objects = (Collection<Object>) resolve(
-					collection, paramMap);
-			for (Object object : objects) {
-				StringBuffer temp = new StringBuffer(replacementText);
-				paramMap.put(newParam, object);
-				doReplace(temp, paramMap);
-				replaceString += temp.toString();
-			}
-
-			paramMap.remove(newParam);
-
-			// Do the replace
-			return new StringReplace(startPoint, startOfEnd + 11
-					+ label.length(), replaceString);
-		}
-
-		return null;
-	}
-
-	protected void doReplace(StringBuffer buffer, Map<String, Object> paramMap) {
-		// Simple replace
-		Matcher matcher = percMatcher.matcher(buffer.toString());
-		Stack<StringReplace> replaceStack = new Stack<StringReplace>();
-		int matchPoint = 0;
-		while (matcher.find(matchPoint)) {
-			int grpStart = matcher.start(1);
-			int grpEnd = matcher.end(1);
-
-			// Check that this isn't a for loop
-			if (buffer.substring(grpStart + 2, grpEnd - 2).startsWith("for ")) {
-				replaceStack.push(replaceWithForLoop(buffer, grpStart, grpEnd,
-						paramMap));
-			} else if (buffer.substring(grpStart + 2, grpEnd - 2).startsWith(
-					"link")) {
-				if (buffer.substring(grpStart + 7, grpEnd - 2).startsWith(
-						"resource"))
-					replaceStack
-							.push(new StringReplace(grpStart, grpEnd,
-									LinkTable.add
-											+ "/"
-											+ buffer.substring(grpStart + 7,
-													grpEnd - 2)));
-				else
-					replaceStack.push(new StringReplace(grpStart, grpEnd,
-							lTable.resolveLink(resolve(buffer.substring(
-									grpStart + 7, grpEnd - 2), paramMap))));
-			} else {
-				String replaceText = convert(resolve(buffer.substring(
-						grpStart + 2, grpEnd - 2), paramMap));
-				replaceStack.push(new StringReplace(grpStart, grpEnd,
-						replaceText));
-			}
-
-			matchPoint = replaceStack.peek().getEnd();
-		}
-
-		while (!replaceStack.isEmpty()) {
-			replaceStack.pop().apply(buffer);
-		}
+	protected String doReplace(String pageText, Map<String, Object> paramMap) {
+		PageParser parser = new PageParser();
+		Replacer repl = parser.parsePage(pageText);
+		repl.print("");
+		return repl.process(paramMap);
 	}
 
 	protected String convert(Object obj) {
@@ -199,25 +149,5 @@ public abstract class Page {
 			return df.format(((Calendar) obj).getTime());
 		else
 			return obj.toString();
-	}
-}
-
-class StringReplace {
-	int start;
-	int end;
-	String toPlace;
-
-	public void apply(StringBuffer buffer) {
-		buffer.replace(start, end, toPlace);
-	}
-
-	public int getEnd() {
-		return end;
-	}
-
-	public StringReplace(int st, int en, String pl) {
-		start = st;
-		end = en;
-		toPlace = pl;
 	}
 }
