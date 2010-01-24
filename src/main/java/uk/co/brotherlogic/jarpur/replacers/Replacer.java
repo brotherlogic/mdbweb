@@ -40,6 +40,10 @@ public abstract class Replacer {
 		return "FullPage: " + this.getClass();
 	}
 
+	protected void setRefObj(Object obj) {
+		refObj = obj;
+	}
+
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
 			Map<String, Object> paramMap) {
 
@@ -72,6 +76,8 @@ public abstract class Replacer {
 
 	protected Object resolveMethod(Object obj, String methodName,
 			Map<String, Object> paramMap) {
+
+		System.err.println("RESOLVING: " + methodName + " with " + obj);
 
 		if (methodName.contains("("))
 			return resolveMethodWithParameter(obj, methodName, paramMap);

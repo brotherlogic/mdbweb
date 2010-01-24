@@ -23,7 +23,7 @@ public class SimpleReplacer extends Replacer {
 
 		if (replacement.startsWith("link")) {
 			System.err.println("LINK: " + replacement.substring(5) + " => "
-					+ resolve(replacement.substring(4), objectMap));
+					+ resolve(replacement.substring(5), objectMap));
 			return lTable.resolveLink(resolve(replacement.substring(5),
 					objectMap));
 		}

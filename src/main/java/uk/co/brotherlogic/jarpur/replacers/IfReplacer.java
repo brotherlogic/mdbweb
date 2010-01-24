@@ -18,10 +18,16 @@ public class IfReplacer extends Replacer {
 	@Override
 	public String process(Object ref, Map<String, Object> objectMap) {
 
+		setRefObj(ref);
 		System.out.println("IF TO RESOLVE = "
-				+ param.substring(5, param.length() - 2));
+				+ param.substring(5, param.length() - 2) + " with " + ref);
 		Object obj = resolve(param.substring(5, param.length() - 2), objectMap);
-		System.err.println("IFOBJ = " + obj);
+
+		if (obj instanceof Boolean) {
+			if ((Boolean) obj) {
+				return elemts.process(ref, objectMap);
+			}
+		}
 
 		return super.process(ref, objectMap);
 	}
