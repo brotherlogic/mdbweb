@@ -43,7 +43,7 @@
   </scm>
   
   <build>
-    <finalName>MDBWeb</finalName>
+    <finalName>mdbweb</finalName>
     <plugins>
       
       <plugin>
