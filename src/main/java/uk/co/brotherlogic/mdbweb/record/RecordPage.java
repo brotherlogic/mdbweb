@@ -33,7 +33,13 @@ public class RecordPage extends Page {
 	}
 
 	public Boolean relatedExists(Track track) {
-		System.err.println("RELATED TRACKS");
+		try {
+
+			return GetRecords.create().getRecordsWithTrack(track.getTitle())
+					.size() > 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

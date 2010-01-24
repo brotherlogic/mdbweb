@@ -17,6 +17,6 @@ public class PlainReplacer extends Replacer {
 
 	@Override
 	public String toString() {
-		return "PlainText";
+		return "PlainText: " + text;
 	}
 }

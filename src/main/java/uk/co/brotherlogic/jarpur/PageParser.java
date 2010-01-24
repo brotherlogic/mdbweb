@@ -75,7 +75,7 @@ public class PageParser {
 							allReplacements.addReplacer(new IfReplacer(
 									paramText, parsePage(ref, pageText
 											.substring(startPoint
-													+ paramText.length() + 4,
+													+ paramText.length(),
 													startList.get(j)))));
 
 							startPoint = startList.get(j)

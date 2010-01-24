@@ -27,4 +27,8 @@ public class HomePage extends Page {
 			throw new IOException(e);
 		}
 	}
+
+	public boolean tester() {
+		return false;
+	}
 }
