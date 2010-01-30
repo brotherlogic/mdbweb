@@ -86,6 +86,8 @@ public class FrontOfHouse extends HttpServlet {
 
 		System.err.println("PARAMS = " + req.getRequestURL().toString()
 				+ " and " + params);
+		System.err.println("SUBSTRING: " + baseAddress + " and " + params);
+		LinkTable.add = baseAddress.substring(baseAddress.indexOf("/", 7));
 		String request = params
 				.substring(baseAddress.length(), params.length());
 

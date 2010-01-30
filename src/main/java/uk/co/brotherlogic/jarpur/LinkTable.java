@@ -24,6 +24,8 @@ public class LinkTable {
 	public String resolveLink(Object o) {
 		String classname = o.getClass().getCanonicalName();
 
+		System.err.println("ADD: " + add);
+
 		System.err.println("RESOLVING: " + classname + " => " + links.keySet()
 				+ " and " + links.containsKey(classname));
 

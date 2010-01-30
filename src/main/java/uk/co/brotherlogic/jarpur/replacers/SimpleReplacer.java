@@ -19,7 +19,7 @@ public class SimpleReplacer extends Replacer {
 	public String process(Object ref, Map<String, Object> objectMap) {
 
 		if (replacement.startsWith("link:resource"))
-			return "/jarpur/" + replacement.substring(5);
+			return LinkTable.add + replacement.substring(5);
 
 		if (replacement.startsWith("link")) {
 			System.err.println("LINK: " + replacement.substring(5) + " => "
