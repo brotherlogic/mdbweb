@@ -16,7 +16,7 @@
 %%for record in records%%
       <tr>
    <td>%%record.getAuthor%%</td>
-   <td>%%record.getTitle%%</td>
+   <td><a href="%%link:record%%">%%record.getTitle%%</a></td>
    <td>%%record.getFormat.getName%%</td>
    </tr>
 %%endfor%%
