@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.mdb.label.GetLabels;
 import uk.co.brotherlogic.mdb.label.Label;
+import uk.co.brotherlogic.mdb.record.Record;
 
 public class LabelPage extends Page {
 	@Override
@@ -28,8 +29,11 @@ public class LabelPage extends Page {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Label label = GetLabels.create().getLabel(9);
+		Label label = GetLabels.create().getLabel(1608);
 		System.err.println("Storing label = " + label.getName() + " [" + label
 				+ "]");
+		for (Record rec : label.getRecords())
+			System.err.println(rec.getAuthor() + " - " + rec.getTitle() + " - "
+					+ rec.getCatNoString());
 	}
 }
