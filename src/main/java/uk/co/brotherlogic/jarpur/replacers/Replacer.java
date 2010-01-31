@@ -47,7 +47,6 @@ public abstract class Replacer {
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
 			Map<String, Object> paramMap) {
 
-		Thread.dumpStack();
 		System.err.println("RESOLVE WITH PARAM = " + methodName + " => " + obj);
 
 		int firstBracket = methodName.indexOf('(');

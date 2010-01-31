@@ -3,6 +3,7 @@ package uk.co.brotherlogic.jarpur;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 import uk.co.brotherlogic.jarpur.replacers.Replacer;
 
 public abstract class Page {
-	protected abstract String buildPage(Map<String, String> params)
+	public abstract String buildPage(Map<String, String> params)
 			throws IOException;
 
 	Pattern percMatcher = Pattern.compile("(\\%\\%.*?\\%\\%)");
@@ -28,10 +29,15 @@ public abstract class Page {
 
 		// Build the template
 		StringBuffer template_data = new StringBuffer();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File(FrontOfHouse.context
-						.getRealPath("WEB-INF")
-						+ "/" + className.replace(".", "/") + ".html"))));
+		BufferedReader reader;
+		if (FrontOfHouse.context != null)
+			reader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(new File(FrontOfHouse.context
+							.getRealPath("WEB-INF")
+							+ "/" + className.replace(".", "/") + ".html"))));
+		else
+			reader = new BufferedReader(new FileReader("src/main/java/" + "/"
+					+ className.replace(".", "/") + ".html"));
 		for (String line = reader.readLine(); line != null; line = reader
 				.readLine())
 			template_data.append(line);

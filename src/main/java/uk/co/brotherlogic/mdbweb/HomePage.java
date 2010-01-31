@@ -11,7 +11,7 @@ import uk.co.brotherlogic.mdb.record.RecordUtils;
 
 public class HomePage extends Page {
 	@Override
-	protected String buildPage(Map<String, String> params) throws IOException {
+	public String buildPage(Map<String, String> params) throws IOException {
 		try {
 			Record recToListenTo = RecordUtils
 					.getRecordToListenTo(new String[] { "12", "10", "7" });

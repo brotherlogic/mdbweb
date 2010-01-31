@@ -11,7 +11,7 @@ import uk.co.brotherlogic.mdb.label.Label;
 
 public class LabelPage extends Page {
 	@Override
-	protected String buildPage(Map<String, String> params) throws IOException {
+	public String buildPage(Map<String, String> params) throws IOException {
 		try {
 			int labelID = Integer.parseInt(params.get("id"));
 			Label label = GetLabels.create().getLabel(labelID);

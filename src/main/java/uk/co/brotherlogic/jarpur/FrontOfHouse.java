@@ -42,18 +42,21 @@ public class FrontOfHouse extends HttpServlet {
 		FrontOfHouse foh = new FrontOfHouse();
 	}
 
-	private void buildRoutingTable() {
+	public void buildRoutingTable() {
 		routingTable = new LinkedList<Route>();
 		Properties props = new Properties();
 
 		try {
+
 			props.load(new FileInputStream(new File(getServletContext()
 					.getRealPath("WEB-INF")
 					+ "/routing.properties")));
+
 			Properties lProps = new Properties();
 			lProps.load(new FileInputStream(new File(getServletContext()
 					.getRealPath("WEB-INF")
 					+ "/links.properties")));
+
 			SimpleReplacer.setLinkTable(new LinkTable(lProps));
 			context = getServletContext();
 		} catch (IOException e) {

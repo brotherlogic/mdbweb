@@ -18,12 +18,15 @@ public class SimpleReplacer extends Replacer {
 	@Override
 	public String process(Object ref, Map<String, Object> objectMap) {
 
+		System.err.println("PROC: " + lTable);
+
 		if (replacement.startsWith("link:resource"))
 			return LinkTable.add + replacement.substring(5);
 
 		if (replacement.startsWith("link")) {
 			System.err.println("LINK: " + replacement.substring(5) + " => "
-					+ resolve(replacement.substring(5), objectMap));
+					+ resolve(replacement.substring(5), objectMap) + " give "
+					+ lTable);
 			return lTable.resolveLink(resolve(replacement.substring(5),
 					objectMap));
 		}

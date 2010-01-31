@@ -17,7 +17,7 @@ import uk.co.brotherlogic.mdb.record.Track;
 
 public class RecordPage extends Page {
 	@Override
-	protected String buildPage(Map<String, String> params) throws IOException {
+	public String buildPage(Map<String, String> params) throws IOException {
 		try {
 			int recordID = Integer.parseInt(params.get("id"));
 			Record record = GetRecords.create().getRecord(recordID);

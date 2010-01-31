@@ -12,7 +12,7 @@ import uk.co.brotherlogic.mdb.record.GetRecords;
 public class TrackPage extends Page {
 
 	@Override
-	protected String buildPage(Map<String, String> params) throws IOException {
+	public String buildPage(Map<String, String> params) throws IOException {
 		String trackname = URLDecoder.decode(params.get("name"), "utf-8");
 
 		Map<String, Object> paramMap = new TreeMap<String, Object>();
