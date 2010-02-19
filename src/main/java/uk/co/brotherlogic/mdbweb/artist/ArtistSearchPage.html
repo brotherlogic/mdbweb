@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>  	
+        <title>Search Results</title>
+        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+    </head>
+    <body>
+<body>
+<div id="title">
+<div id="boxed">
+<h1>%%query%%</h1>
+</div>
+</div>
+<div id="boxed">
+<h2>Results:</h2>
+<table width=80%>
+%%for artist in artists%%
+      <tr>
+   <td>%%artist.getShowName%%</td>
+   </tr>
+ %%endfor%%
+   </table>
+   </div>
+    </body>
+</html>

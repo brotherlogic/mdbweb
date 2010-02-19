@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import uk.co.brotherlogic.jarpur.replacers.SimpleReplacer;
-import uk.co.brotherlogic.mdb.Connect;
 
 /**
  * Front of house deals with request and routes them to the relevant controller
@@ -27,26 +26,31 @@ import uk.co.brotherlogic.mdb.Connect;
  * @author sat
  * 
  */
-public class FrontOfHouse extends HttpServlet {
+public class FrontOfHouse extends HttpServlet
+{
 	List<Route> routingTable;
 	private static String baseAddress = "";
 	public static ServletContext context;
 
 	Route resourceRoute = new Route("resource/", null);
 
-	public FrontOfHouse() {
-		Connect.setForProduction();
+	public FrontOfHouse()
+	{
+		// Connect.setForProduction();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		FrontOfHouse foh = new FrontOfHouse();
 	}
 
-	public void buildRoutingTable() {
+	public void buildRoutingTable()
+	{
 		routingTable = new LinkedList<Route>();
 		Properties props = new Properties();
 
-		try {
+		try
+		{
 
 			props.load(new FileInputStream(new File(getServletContext()
 					.getRealPath("WEB-INF")
@@ -59,11 +63,13 @@ public class FrontOfHouse extends HttpServlet {
 
 			SimpleReplacer.setLinkTable(new LinkTable(lProps));
 			context = getServletContext();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 
-		for (Object matcher : props.keySet()) {
+		for (Object matcher : props.keySet())
+		{
 			routingTable.add(new Route(matcher.toString(), props.get(matcher)
 					.toString()));
 		}
@@ -71,12 +77,14 @@ public class FrontOfHouse extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws IOException, ServletException {
+			throws IOException, ServletException
+	{
 
 		System.err.println("BASE ADDRESS");
 		LinkTable.add = req.getContextPath();
 
-		if (baseAddress.length() == 0) {
+		if (baseAddress.length() == 0)
+		{
 			// Build up the base address
 			String base = req.getContextPath();
 			baseAddress = req.getRequestURL().substring(0,
@@ -93,8 +101,10 @@ public class FrontOfHouse extends HttpServlet {
 		LinkTable.add = baseAddress.substring(baseAddress.indexOf("/", 7));
 		String request = params
 				.substring(baseAddress.length(), params.length());
+		System.err.println("REQUEST = " + request);
 
-		if (resourceRoute.matches(request)) {
+		if (resourceRoute.matches(request))
+		{
 			// We're after a resource rather than a page - just serve it
 			OutputStream os = res.getOutputStream();
 			byte[] buffer = new byte[256];
@@ -102,13 +112,15 @@ public class FrontOfHouse extends HttpServlet {
 					.getRealPath("WEB-INF")
 					+ "/resources/" + resourceRoute.getRemaining(request)));
 			int read = is.read(buffer, 0, buffer.length);
-			while (read > 0) {
+			while (read > 0)
+			{
 				os.write(buffer, 0, read);
 				read = is.read(buffer, 0, buffer.length);
 			}
 			is.close();
 			os.close();
-		} else {
+		} else
+		{
 			// Build the routing table if we need to
 			if (routingTable == null)
 				buildRoutingTable();
@@ -117,18 +129,33 @@ public class FrontOfHouse extends HttpServlet {
 			PrintWriter out = res.getWriter();
 
 			Route matcher = null;
-			for (Route route : routingTable) {
-				if (route.matches(request)) {
+			for (Route route : routingTable)
+			{
+				if (route.matches(request))
+				{
 					matcher = route;
 					break;
 				}
 			}
 
-			if (matcher != null) {
+			System.err.println("FOUND MATCHER = " + matcher);
+
+			if (matcher != null)
+			{
 				Page handler = matcher.getHandler();
 				String remainder = matcher.getRemaining(request);
 				String[] elems = remainder.split("/");
 				Map<String, String> parameters = new TreeMap<String, String>();
+
+				// Add the HTTP Parameters
+				Map pMap = req.getParameterMap();
+				for (Object key : pMap.keySet())
+				{
+					String sKey = (String) key;
+					String value = ((String[]) pMap.get(key))[0];
+					parameters.put(sKey, value);
+				}
+
 				System.err.println("REMAIN = " + remainder);
 				if (elems.length >= 2)
 					for (int i = 0; i < elems.length; i += 2)
