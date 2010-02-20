@@ -9,8 +9,6 @@ import java.util.TreeMap;
 import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.artist.GetArtists;
-import uk.co.brotherlogic.mdb.label.GetLabels;
-import uk.co.brotherlogic.mdb.label.Label;
 
 public class ArtistSearchPage extends Page
 {
@@ -35,8 +33,8 @@ public class ArtistSearchPage extends Page
 
 	public static void main(String[] args) throws Exception
 	{
-		Label label = GetLabels.create().getLabel(9);
-		System.err.println("Storing label = " + label.getName() + " [" + label
-				+ "]");
+		Artist art = GetArtists.create().getArtist(43087);
+		System.err.println(art.getShowName());
+		System.err.println(art.getRecords());
 	}
 }

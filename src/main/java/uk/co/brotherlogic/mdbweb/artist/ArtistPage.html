@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>  	
-        <title>Label: %%label.getName%%</title>
+        <title>Artist: %%artist.getShowName%%</title>
         <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
     </head>
     <body>
@@ -12,7 +12,17 @@
 </div>
 </div>
 <div id="boxed">
-<h2>Appears On:</h2>
+%%if has_groop%%
+<h2>Authored:</h2>
+<table width=80%>
+%%for record in groop.getAuthoredRecords%%
+      <tr>
+   <td>%%record.getAuthor%%</td>
+   <td wicket:id="title"><a href="%%link:record%%">%%record.getTitle%%</a></td>
+   <td wicket:id="format">%%record.getFormat%%</td>
+   </tr>
+ %%endfor%%
+ %%endif%%
 <table width=80%>
 %%for record in artist.getRecords%%
       <tr>
@@ -23,6 +33,11 @@
  %%endfor%%
    </span>
    </table>
+   <h2>Appears On:</h2>
+
+   </span>
+   </table>
+   
    </div>
     </body>
 </html>

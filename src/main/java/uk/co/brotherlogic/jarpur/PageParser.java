@@ -16,25 +16,29 @@ import uk.co.brotherlogic.jarpur.replacers.PlainReplacer;
 import uk.co.brotherlogic.jarpur.replacers.Replacer;
 import uk.co.brotherlogic.jarpur.replacers.SimpleReplacer;
 
-public class PageParser {
+public class PageParser
+{
 
 	private final Pattern elementFinder = Pattern.compile("(\\%\\%.*?\\%\\%)");
 
-	public Replacer parsePage(Object ref, String pageText) {
+	public Replacer parsePage(Object ref, String pageText)
+	{
 
 		Replacer allReplacements = new ContainerReplacer();
 
 		Matcher matcher = elementFinder.matcher(pageText);
 		Map<Integer, String> typeMap = new TreeMap<Integer, String>();
 		List<Integer> startList = new LinkedList<Integer>();
-		while (matcher.find()) {
+		while (matcher.find())
+		{
 			typeMap.put(matcher.start(), matcher.group(1));
 			startList.add(matcher.start());
 		}
 
 		int i = 0;
 		int startPoint = 0;
-		while (i < typeMap.keySet().size()) {
+		while (i < typeMap.keySet().size())
+		{
 			allReplacements.addReplacer(new PlainReplacer(pageText.substring(
 					startPoint, startList.get(i))));
 			startPoint = startList.get(i);
@@ -45,15 +49,18 @@ public class PageParser {
 					.split("\\s+")[0];
 
 			boolean ender = false;
-			for (String paramTexts : typeMap.values()) {
+			for (String paramTexts : typeMap.values())
+			{
 				if (paramTexts.startsWith("%%end" + firstParam))
 					ender = true;
 			}
 
-			if (ender) {
+			if (ender)
+			{
 				// Find the end point
 				int foundCount = 1;
-				for (int j = i + 1; j < startList.size(); j++) {
+				for (int j = i + 1; j < startList.size(); j++)
+				{
 					if (typeMap.get(startList.get(j)).startsWith(
 							"%%" + firstParam))
 						foundCount++;
@@ -61,8 +68,11 @@ public class PageParser {
 							"%%end" + firstParam))
 						foundCount--;
 
-					if (foundCount == 0) {
-						if (firstParam.startsWith("for")) {
+					if (foundCount == 0)
+					{
+						System.err.println("FIRST_PARAM = " + firstParam);
+						if (firstParam.startsWith("for"))
+						{
 							allReplacements.addReplacer(new ForReplacer(
 									paramText, parsePage(ref, pageText
 											.substring(startPoint
@@ -71,7 +81,9 @@ public class PageParser {
 
 							startPoint = startList.get(j)
 									+ "%%endfor%%".length();
-						} else if (firstParam.startsWith("if")) {
+						} else if (firstParam.startsWith("if"))
+						{
+							System.err.println("FOUND IF");
 							allReplacements.addReplacer(new IfReplacer(
 									paramText, parsePage(ref, pageText
 											.substring(startPoint
@@ -87,7 +99,8 @@ public class PageParser {
 
 					}
 				}
-			} else {
+			} else
+			{
 				allReplacements.addReplacer(new SimpleReplacer(paramText
 						.substring(2, paramText.length() - 2)));
 				startPoint += paramText.length();
@@ -102,7 +115,8 @@ public class PageParser {
 		return allReplacements;
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception
+	{
 		String pageText = "";
 		BufferedReader reader = new BufferedReader(
 				new FileReader(
