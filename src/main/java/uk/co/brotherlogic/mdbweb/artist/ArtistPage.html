@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>  	
         <title>Artist: %%artist.getShowName%%</title>
-        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+        <link rel="stylesheet" href="%%link:resource/main.css%%" media="screen">
     </head>
     <body>
 <body>
@@ -23,21 +23,17 @@
    </tr>
  %%endfor%%
  %%endif%%
+<h2>Appears On:</h2>
 <table width=80%>
 %%for record in artist.getRecords%%
       <tr>
    <td>%%record.getAuthor%%</td>
-   <td wicket:id="title">%%record.getTitle%%</td>
+   <td wicket:id="title"><a href="%%link:record%%">%%record.getTitle%%</a></td>
    <td wicket:id="format">%%record.getFormat%%</td>
    </tr>
  %%endfor%%
    </span>
    </table>
-   <h2>Appears On:</h2>
-
-   </span>
-   </table>
-   
    </div>
     </body>
 </html>
