@@ -40,7 +40,7 @@ public abstract class Page {
 					+ className.replace(".", "/") + ".html"));
 		for (String line = reader.readLine(); line != null; line = reader
 				.readLine())
-			template_data.append(line);
+			template_data.append(line + "\n");
 
 		// Apply the template
 		return doReplace(template_data.toString(), paramMap);

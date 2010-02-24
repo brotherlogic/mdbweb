@@ -51,15 +51,21 @@ public abstract class Replacer {
 
 		int firstBracket = methodName.indexOf('(');
 		String method = methodName.substring(0, firstBracket);
-		String parameter = methodName.substring(firstBracket + 1, methodName
-				.length() - 1);
+		String[] parameters = methodName.substring(firstBracket + 1,
+				methodName.length() - 1).split(",");
 
 		Method[] methodArr = obj.getClass().getMethods();
 		for (Method method2 : methodArr) {
 			if (method2.getName().equals(method)) {
 				try {
-					return method2.invoke(obj, new Object[] { paramMap
-							.get(parameter) });
+					Object[] objArr = new Object[parameters.length];
+					for (int i = 0; i < objArr.length; i++) {
+						objArr[i] = resolve(parameters[i], paramMap);
+						System.err.println("PARAM #" + i + ": " + objArr[i]
+								+ " from " + parameters[i]);
+					}
+
+					return method2.invoke(obj, objArr);
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
