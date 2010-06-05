@@ -29,12 +29,12 @@ public class Route implements Comparable<Route>
 		return request.substring(match.length(), request.length());
 	}
 
-	public Page getHandler() throws IOException
+	public TemplatePage getHandler() throws IOException
 	{
 		try
 		{
 			Class handler = Class.forName(handlerClass);
-			return (Page) handler.newInstance();
+			return (TemplatePage) handler.newInstance();
 		} catch (ClassNotFoundException e)
 		{
 			throw new IOException(e);
