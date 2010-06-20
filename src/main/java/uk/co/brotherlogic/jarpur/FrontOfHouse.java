@@ -40,16 +40,16 @@ public class FrontOfHouse extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 
-		String path = req.getContextPath();
-		System.err.println("PATH = " + path);
-
-		//Knock off the starter
-		String searchPath = path.substring(JarpurProperties.get("web").length(), path.length());
-		System.err.println("SEARCH:" + searchPath + ":");
+		//Get the path and drop off the leading / and add a trailing one if not already there
+		String path = req.getPathInfo().substring(1);
+		if (!path.endsWith("/"))
+			path = path + "/";
+		
+		System.err.println("SEARCH:" + path + ":");
 		
 		//Start searching for the appropriate class
 		List<String> params = new LinkedList<String>();
-		String page = search(searchPath,params,req.getParameterMap());
+		String page = search(path,params,req.getParameterMap());
 		
 		//Write out the result
 		OutputStream os = res.getOutputStream();
@@ -58,9 +58,14 @@ public class FrontOfHouse extends HttpServlet {
 		os.close();
 	}
 	
+	private String capitalize(String in)
+	{
+		return Character.toUpperCase(in.charAt(0)) + in.substring(1);
+	}
+	
 	private String search(String path, List<String> params, Map<String,String> paramMap)
 	{
-		String className = JarpurProperties.get("base") + ". " + path.replace("/", ".");
+		String className = JarpurProperties.get("base") + "." + path.replace("/", ".");
 		System.err.println(className);
 		
 		//Build on Default
@@ -68,6 +73,19 @@ public class FrontOfHouse extends HttpServlet {
 		String res = build(defaultClass,params,paramMap);
 		if (res != null)
 			return res;
+		
+		String[] pathElems = path.split("/");
+		className = JarpurProperties.get("base") + "." + path.substring(0,path.length()-pathElems[pathElems.length-1].length()-1).replace("/", ".");
+		String nClass = className.trim() + capitalize(pathElems[pathElems.length-1]);
+		res = build(nClass,params,paramMap);
+		if (res != null)
+			return res;
+		
+		if (pathElems.length > 0)
+		{
+			params.add(pathElems[pathElems.length-1]);
+			return search (path.substring(0,path.length()-pathElems[pathElems.length-1].length()-1),params,paramMap);
+		}
 		
 		//Try down a bit
 		return "";
@@ -83,7 +101,7 @@ public class FrontOfHouse extends HttpServlet {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.err.println("SKIPPING:" + className);
 		}
 		
 		return null;

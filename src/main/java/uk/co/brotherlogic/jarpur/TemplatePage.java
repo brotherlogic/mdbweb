@@ -22,6 +22,8 @@ public abstract class TemplatePage extends Page{
 
 	DateFormat df = DateFormat.getDateInstance();
 
+	protected abstract Map<String,Object> convertParams(List<String> paramList, Map<String,String> paramMap);
+	
 	public String generate(List<String> paramList, Map<String,String> paramMap)
 			throws IOException {
 		
@@ -37,7 +39,7 @@ public abstract class TemplatePage extends Page{
 			template_data.append(line + "\n");
 
 		// Apply the template
-		return doReplace(template_data.toString(), paramList, paramMap);
+		return doReplace(template_data.toString(), convertParams(paramList, paramMap));
 	}
 
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
