@@ -20,6 +20,7 @@ public class JarpurProperties {
 	
 	private static void buildProperties()
 	{
+		System.err.println("FOUND = " + new File("web.properties").exists());
 		properties = new Properties();
 		try
 		{

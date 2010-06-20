@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,11 +28,6 @@ import uk.co.brotherlogic.jarpur.replacers.SimpleReplacer;
  * 
  */
 public class FrontOfHouse extends HttpServlet {
-	List<Route> routingTable;
-	private static String baseAddress = "";
-	public static ServletContext context;
-
-	Route resourceRoute = new Route("resource/", null);
 
 	public FrontOfHouse() {
 	}
@@ -40,106 +36,56 @@ public class FrontOfHouse extends HttpServlet {
 		FrontOfHouse foh = new FrontOfHouse();
 	}
 
-	public void buildRoutingTable() {
-		routingTable = new LinkedList<Route>();
-		Properties props = new Properties();
-
-		try {
-
-			props.load(new FileInputStream(new File(getServletContext()
-					.getRealPath("WEB-INF")
-					+ "/routing.properties")));
-
-			Properties lProps = new Properties();
-			lProps.load(new FileInputStream(new File(getServletContext()
-					.getRealPath("WEB-INF")
-					+ "/links.properties")));
-
-			SimpleReplacer.setLinkTable(new LinkTable(lProps));
-			context = getServletContext();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (Object matcher : props.keySet()) {
-			routingTable.add(new Route(matcher.toString(), props.get(matcher)
-					.toString()));
-		}
-	}
-
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 
-		LinkTable.add = req.getContextPath();
+		String path = req.getContextPath();
+		System.err.println("PATH = " + path);
 
-		if (baseAddress.length() == 0) {
-			// Build up the base address
-			String base = req.getContextPath();
-			baseAddress = req.getRequestURL().substring(0,
-					req.getRequestURL().indexOf(base) + base.length())
-					+ "/";
+		//Knock off the starter
+		String searchPath = path.substring(JarpurProperties.get("web").length(), path.length());
+		System.err.println("SEARCH:" + searchPath + ":");
+		
+		//Start searching for the appropriate class
+		List<String> params = new LinkedList<String>();
+		String page = search(searchPath,params,req.getParameterMap());
+		
+		//Write out the result
+		OutputStream os = res.getOutputStream();
+		PrintStream ps = new PrintStream(os);
+		ps.print(page);
+		os.close();
+	}
+	
+	private String search(String path, List<String> params, Map<String,String> paramMap)
+	{
+		String className = JarpurProperties.get("base") + ". " + path.replace("/", ".");
+		System.err.println(className);
+		
+		//Build on Default
+		String defaultClass = className.trim() + "Default";
+		String res = build(defaultClass,params,paramMap);
+		if (res != null)
+			return res;
+		
+		//Try down a bit
+		return "";
+	}
+	
+	private String build(String className, List<String> params, Map<String,String> paramMap)
+	{
+		try
+		{
+			Class cls = Class.forName(className);
+			Page pg = (Page)cls.getConstructor(new Class[0]).newInstance(new Object[0]);
+			return pg.generate(params, paramMap);
 		}
-
-		String params = req.getRequestURL().toString();
-
-		LinkTable.add = baseAddress.substring(baseAddress.indexOf("/", 7));
-		String request = params
-				.substring(baseAddress.length(), params.length());
-
-		if (resourceRoute.matches(request)) {
-			// We're after a resource rather than a page - just serve it
-			OutputStream os = res.getOutputStream();
-			byte[] buffer = new byte[256];
-			InputStream is = new FileInputStream(new File(getServletContext()
-					.getRealPath("WEB-INF")
-					+ "/resources/" + resourceRoute.getRemaining(request)));
-			int read = is.read(buffer, 0, buffer.length);
-			while (read > 0) {
-				os.write(buffer, 0, read);
-				read = is.read(buffer, 0, buffer.length);
-			}
-			is.close();
-			os.close();
-		} else {
-			// Build the routing table if we need to
-			if (routingTable == null)
-				buildRoutingTable();
-
-			res.setContentType("text/html");
-			PrintWriter out = res.getWriter();
-
-			Route matcher = null;
-			for (Route route : routingTable) {
-				if (route.matches(request)) {
-					matcher = route;
-					break;
-				}
-			}
-
-			if (matcher != null) {
-				TemplatePage handler = matcher.getHandler();
-				String remainder = matcher.getRemaining(request);
-				String[] elems = remainder.split("/");
-				Map<String, String> parameters = new TreeMap<String, String>();
-
-				// Add the HTTP Parameters
-				Map pMap = req.getParameterMap();
-				for (Object key : pMap.keySet()) {
-					String sKey = (String) key;
-					String value = ((String[]) pMap.get(key))[0];
-					parameters.put(sKey, value);
-				}
-
-				if (elems.length >= 2)
-					for (int i = 0; i < elems.length; i += 2)
-						parameters.put(elems[i], elems[i + 1]);
-
-				long sTime = System.currentTimeMillis();
-				out.println(handler.buildPage(parameters));
-
-				out.close();
-			}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
+		
+		return null;
 	}
 }
