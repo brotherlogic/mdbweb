@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,9 @@ public abstract class TemplatePage extends Page{
 
 	DateFormat df = DateFormat.getDateInstance();
 
-	public String generate(PageRequest request)
+	protected abstract Map<String,Object> convertParams(List<String> paramList, Map<String,String> paramMap);
+	
+	public String generate(List<String> paramList, Map<String,String> paramMap)
 			throws IOException {
 		
 		String className = this.getClass().getCanonicalName();
@@ -29,12 +32,6 @@ public abstract class TemplatePage extends Page{
 		// Build the template
 		StringBuffer template_data = new StringBuffer();
 		BufferedReader reader;
-		if (FrontOfHouse.context != null)
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(new File(FrontOfHouse.context
-							.getRealPath("WEB-INF")
-							+ "/" + className.replace(".", "/") + ".html"))));
-		else
 			reader = new BufferedReader(new FileReader("src/main/java/" + "/"
 					+ className.replace(".", "/") + ".html"));
 		for (String line = reader.readLine(); line != null; line = reader
@@ -42,7 +39,7 @@ public abstract class TemplatePage extends Page{
 			template_data.append(line + "\n");
 
 		// Apply the template
-		return doReplace(template_data.toString(), request.generateParamMap(this.getClass()));
+		return doReplace(template_data.toString(), convertParams(paramList, paramMap));
 	}
 
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
