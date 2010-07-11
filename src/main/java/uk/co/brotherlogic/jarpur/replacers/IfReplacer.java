@@ -11,17 +11,12 @@ public class IfReplacer extends Replacer {
 		elemts = elements;
 		this.param = param;
 
-		System.err.println("IF: " + param);
-
 	}
 
 	@Override
 	public String process(Object ref, Map<String, Object> objectMap) {
 
 		setRefObj(ref);
-		System.out.println("IF TO RESOLVE = "
-				+ param.substring(5, param.length() - 2) + " with " + ref);
-		elemts.print("HERE");
 		Object obj = resolve(param.substring(5, param.length() - 2), objectMap);
 
 		if (obj instanceof Boolean) {

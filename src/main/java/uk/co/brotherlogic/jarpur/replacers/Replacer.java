@@ -19,13 +19,6 @@ public abstract class Replacer {
 		replacers.add(add);
 	}
 
-	public void print(String tabs) {
-		System.out.println(tabs + this);
-		for (Replacer repl : replacers) {
-			repl.print(tabs + "\t");
-		}
-	}
-
 	public String process(Object ref, Map<String, Object> objectMap) {
 		refObj = ref;
 		StringBuffer buffer = new StringBuffer();
@@ -47,8 +40,6 @@ public abstract class Replacer {
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
 			Map<String, Object> paramMap) {
 
-		System.err.println("RESOLVE WITH PARAM = " + methodName + " => " + obj);
-
 		int firstBracket = methodName.indexOf('(');
 		String method = methodName.substring(0, firstBracket);
 		String[] parameters = methodName.substring(firstBracket + 1,
@@ -61,8 +52,6 @@ public abstract class Replacer {
 					Object[] objArr = new Object[parameters.length];
 					for (int i = 0; i < objArr.length; i++) {
 						objArr[i] = resolve(parameters[i], paramMap);
-						System.err.println("PARAM #" + i + ": " + objArr[i]
-								+ " from " + parameters[i]);
 					}
 
 					return method2.invoke(obj, objArr);
@@ -81,8 +70,6 @@ public abstract class Replacer {
 
 	protected Object resolveMethod(Object obj, String methodName,
 			Map<String, Object> paramMap) {
-
-		System.err.println("RESOLVING: " + methodName + " with " + obj);
 
 		if (methodName.contains("("))
 			return resolveMethodWithParameter(obj, methodName, paramMap);

@@ -73,7 +73,6 @@ public class FrontOfHouse extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 
-		System.err.println("BASE ADDRESS");
 		LinkTable.add = req.getContextPath();
 
 		if (baseAddress.length() == 0) {
@@ -82,18 +81,13 @@ public class FrontOfHouse extends HttpServlet {
 			baseAddress = req.getRequestURL().substring(0,
 					req.getRequestURL().indexOf(base) + base.length())
 					+ "/";
-			System.err.println("BASE = " + baseAddress);
 		}
 
 		String params = req.getRequestURL().toString();
 
-		System.err.println("PARAMS = " + req.getRequestURL().toString()
-				+ " and " + params);
-		System.err.println("SUBSTRING: " + baseAddress + " and " + params);
 		LinkTable.add = baseAddress.substring(baseAddress.indexOf("/", 7));
 		String request = params
 				.substring(baseAddress.length(), params.length());
-		System.err.println("REQUEST = " + request);
 
 		if (resourceRoute.matches(request)) {
 			// We're after a resource rather than a page - just serve it
@@ -125,8 +119,6 @@ public class FrontOfHouse extends HttpServlet {
 				}
 			}
 
-			System.err.println("FOUND MATCHER = " + matcher);
-
 			if (matcher != null) {
 				Page handler = matcher.getHandler();
 				String remainder = matcher.getRemaining(request);
@@ -141,7 +133,6 @@ public class FrontOfHouse extends HttpServlet {
 					parameters.put(sKey, value);
 				}
 
-				System.err.println("REMAIN = " + remainder);
 				if (elems.length >= 2)
 					for (int i = 0; i < elems.length; i += 2)
 						parameters.put(elems[i], elems[i + 1]);

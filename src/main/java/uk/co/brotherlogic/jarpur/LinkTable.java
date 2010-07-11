@@ -24,11 +24,6 @@ public class LinkTable {
 	public String resolveLink(Object o) {
 		String classname = o.getClass().getCanonicalName();
 
-		System.err.println("ADD: " + add);
-
-		System.err.println("RESOLVING: " + classname + " => " + links.keySet()
-				+ " and " + links.containsKey(classname));
-
 		if (links.containsKey(classname)) {
 			return resolveLink(o, links.get(classname));
 		}
@@ -40,22 +35,16 @@ public class LinkTable {
 	private String resolveLink(Object o, String ref) {
 		StringBuffer buffer = new StringBuffer(ref);
 
-		System.err.println("MATCHING = > " + ref);
 		Matcher matcher = objPattern.matcher(ref);
 		if (matcher.find()) {
 			int start = matcher.start(1);
 			int end = matcher.end(1);
 
 			String methodName = ref.substring(start, end);
-			System.err.println("RESOLVING: " + o + ", " + ref + " => "
-					+ methodName);
 			String rep = resolveMethod(o, methodName);
 			buffer.replace(start - 2, end + 2, rep);
-			System.err.println("Adding " + add);
 			return add + buffer.toString();
-		} else
-			System.err.println("NO MATCH");
-
+		}
 		return null;
 	}
 
