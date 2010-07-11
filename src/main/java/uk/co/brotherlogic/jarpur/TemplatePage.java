@@ -1,31 +1,37 @@
 package uk.co.brotherlogic.jarpur;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public abstract class Page {
-<<<<<<< HEAD
-	public abstract String buildPage(Map<String, String> params)
-			throws IOException;
+import uk.co.brotherlogic.jarpur.replacers.Replacer;
 
+public abstract class TemplatePage extends Page{
+	
 	Pattern percMatcher = Pattern.compile("(\\%\\%.*?\\%\\%)");
 
 	DateFormat df = DateFormat.getDateInstance();
 
-	protected String buildPageFromTemplate(Map<String, Object> paramMap)
+	protected abstract Map<String,Object> convertParams(List<String> paramList, Map<String,String> paramMap);
+	
+	public String generate(List<String> paramList, Map<String,String> paramMap)
 			throws IOException {
+		
 		String className = this.getClass().getCanonicalName();
 
 		// Build the template
 		StringBuffer template_data = new StringBuffer();
 		BufferedReader reader;
-		if (FrontOfHouse.context != null)
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(new File(FrontOfHouse.context
-							.getRealPath("WEB-INF")
-							+ "/" + className.replace(".", "/") + ".html"))));
-		else
 			reader = new BufferedReader(new FileReader("src/main/java/" + "/"
 					+ className.replace(".", "/") + ".html"));
 		for (String line = reader.readLine(); line != null; line = reader
@@ -33,7 +39,7 @@ public abstract class Page {
 			template_data.append(line + "\n");
 
 		// Apply the template
-		return doReplace(template_data.toString(), paramMap);
+		return doReplace(template_data.toString(), convertParams(paramList, paramMap));
 	}
 
 	protected Object resolveMethodWithParameter(Object obj, String methodName,
@@ -136,6 +142,7 @@ public abstract class Page {
 	protected String doReplace(String pageText, Map<String, Object> paramMap) {
 		PageParser parser = new PageParser();
 		Replacer repl = parser.parsePage(this, pageText);
+		repl.print("");
 		return repl.process(this, paramMap);
 	}
 
@@ -146,9 +153,3 @@ public abstract class Page {
 			return obj.toString();
 	}
 }
-=======
-	
-	public abstract String generate(List<String> paramList, Map<String,String> paramMap) throws IOException;
-	
-}
->>>>>>> b65f12c22586957d97c45d7b203773a3b4380fef

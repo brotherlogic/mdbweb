@@ -44,7 +44,11 @@ public class LinkTable {
 			String rep = resolveMethod(o, methodName);
 			buffer.replace(start - 2, end + 2, rep);
 			return add + buffer.toString();
+<<<<<<< HEAD
 		}
+=======
+		} 
+>>>>>>> b65f12c22586957d97c45d7b203773a3b4380fef
 		return null;
 	}
 

@@ -1,4 +1,4 @@
-package uk.co.brotherlogic.jarpu;
+package uk.co.brotherlogic.jarpur;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
