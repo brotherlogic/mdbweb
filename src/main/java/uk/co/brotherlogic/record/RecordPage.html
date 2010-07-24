@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>  	
+        <title>Record: %%record.getTitle%%</title>
+        <link rel="stylesheet" href="%%link:resource/main.css%%" media="screen">
+    </head>
+<body>
+    
+<div id="title">
+<div id="boxed">
+   <h1>%%record.getTitle%%</h1>
+   <h2>%%record.getAuthor%%</h2>
+</div>
+</div>
+
+<div id="sideinfo">
+<div id="boxed">
+<ul>
+   <li id="bold">Bought On:</li>
+   <li>%%record.getDate%%</li>
+   <li id="bold">Released On:</li>
+   <li>%%record.getReleaseYear%%</li>
+   <li id="bold">Label:</li>
+   %%for label in record.getLabels%%
+      <li>%%label.getName%%</li>
+   %%endfor%%	
+   <li id="bold">Cat Nos:</li>
+   %%for catno in record.getCatNos%%
+      <li>%%catno%%</li>
+   %%endfor%%
+         <li id="bold">Format:</li>
+   <li>%%record.getFormat.getName%%</li>
+   <li id="bold">Category:</li>
+   <li>%%record.getCategory.getCatName%%</li>
+</ul>
+</div>
+
+<div id="boxed">
+%%for number in artistmap.keySet%%
+	<span>%%number%%</span>   
+    <ul>
+    	%%for artist in artistmap.get(number)%%
+      		<li>%%artist.getShowName%%</li>
+      	%%endfor%%
+    </ul>
+%%endfor%%
+</div>
+</div>
+
+<div id="tracks">
+<div id="boxed">
+<TABLE width="85%">
+	%%for track in record.getTracks%%   
+		<TR>
+			<TD valign="top" id="track-odd" wicket:id="tracknumber">%%track.getTrackNumber%%</TD>
+			<TD valign="top" id="track-odd" wicket:id="trackname"><A %%if relatedExists(track)%% href="%%link:track%%" %%endif%%>%%track.getTitle%%</A></TD>
+			<TD valign="top" id="track-odd" wicket:id="tracktime">%%track.getLengthInSeconds%%</TD>
+		</TR>
+	%%endfor%%
+</TABLE>
+</DIV>
+</DIV>  
+</BODY>
+</HTML>

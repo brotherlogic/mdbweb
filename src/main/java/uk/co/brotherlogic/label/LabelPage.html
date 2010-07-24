@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>  	
+        <title>Label: %%label.getName%%</title>
+        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+    </head>
+    <body>
+<div id="title">
+<div id="boxed">
+<h1>%%label.getName%%</h1>
+</div>
+</div>
+<div id="boxed">
+<table width=80%>
+%%for record in label.getRecords%%
+   <tr>
+   		<td wicket:id="catno">%%record.getCatNoString%%</td>
+   		<td wicket:id="author">%%record.getAuthor%%</td>
+   		<td wicket:id="title">%%record.getTitle%%</td>
+   </tr>
+%%endfor%%
+   </table>
+   </div>
+    </body>
+</html>
