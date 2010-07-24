@@ -7,28 +7,30 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import uk.co.brotherlogic.jarpur.Page;
+import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.artist.GetArtists;
 
-public class ArtistSearchPage extends Page
+public class ArtistSearchPage extends TemplatePage
 {
 	@Override
-	public String buildPage(Map<String, String> params) throws IOException
+	protected Map<String,Object> convertParams(List<String> elems, Map<String, String> params) 
 	{
+		Map<String, Object> paramMap = new TreeMap<String, Object>();
 		try
 		{
 			String query = params.get("q");
 			List<Artist> artists = GetArtists.create().search(query);
 
-			Map<String, Object> paramMap = new TreeMap<String, Object>();
 			paramMap.put("artists", artists);
 			paramMap.put("query", query);
 
-			return buildPageFromTemplate(paramMap);
 		} catch (SQLException e)
 		{
-			throw new IOException(e);
+			e.printStackTrace();
 		}
+		
+		return paramMap;
 	}
 
 	public static void main(String[] args) throws Exception

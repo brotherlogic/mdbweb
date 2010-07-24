@@ -1,11 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>uk.co.brotherlogic.jarpur</groupId>
-  <artifactId>jarpur</artifactId>
+  <groupId>uk.co.brotherlogic.mdbweb</groupId>
+  <artifactId>mdbweb</artifactId>
   <packaging>war</packaging>
   <version>0.3-SNAPSHOT</version>
   <name>jarpur</name>
-  <url>http://maven.apache.org</url>
+  <url>mdbweb://maven.apache.org</url>
+  
+  <distributionManagement>
+    <repository>
+      <id>edip</id>
+      <name>edip-releases</name>
+      <url>http://edip:8085/artifactory/libs-releases-local</url>
+    </repository>
+    <snapshotRepository>
+        <id>edip</id>
+        <name>edip-snapshots</name>
+        <url>http://edip:8085/artifactory/libs-snapshots-local</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -25,6 +40,16 @@
       <version>2.0</version>
       <scope>provided</scope>
     </dependency>
+        <dependency>
+      <groupId>uk.co.brotherlogic.mdb</groupId>
+      <version>0.5-SNAPSHOT</version>
+      <artifactId>mdbcore</artifactId>
+    </dependency>
+      <dependency>
+      <groupId>uk.co.brotherlogic.jarpur</groupId>
+      <version>0.3-SNAPSHOT</version>
+      <artifactId>jarpur</artifactId>
+    </dependency>
   </dependencies>
   
   <scm>
@@ -33,7 +58,7 @@
   </scm>
 
 <build>
-    <finalName>jarpur</finalName>
+    <finalName>mdbweb</finalName>
     <plugins>
       
       <plugin>

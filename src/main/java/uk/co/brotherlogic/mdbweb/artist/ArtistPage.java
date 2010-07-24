@@ -1,32 +1,33 @@
 package uk.co.brotherlogic.mdbweb.artist;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import uk.co.brotherlogic.jarpur.Page;
+import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.artist.GetArtists;
 import uk.co.brotherlogic.mdb.label.GetLabels;
 import uk.co.brotherlogic.mdb.label.Label;
 
-public class ArtistPage extends Page {
+public class ArtistPage extends TemplatePage {
 	@Override
-	public String buildPage(Map<String, String> params) throws IOException {
+	protected Map<String,Object> convertParams(List<String> strParams,Map<String, String> params)  {
+		Map<String, Object> paramMap = new TreeMap<String, Object>();
 		try {
 			int labelID = Integer.parseInt(params.get("id"));
 			Artist artist = GetArtists.create().getArtist(labelID);
 
-			Map<String, Object> paramMap = new TreeMap<String, Object>();
 			paramMap.put("artist", artist);
-
-			return buildPageFromTemplate(paramMap);
 		} catch (SQLException e) {
-			throw new IOException(e);
+			e.printStackTrace();
 		}
+		
+		return paramMap;
 	}
+
 
 	public Boolean sized(Collection col) {
 		System.err.println("COL: " + col);

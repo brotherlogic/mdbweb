@@ -10,26 +10,30 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import uk.co.brotherlogic.jarpur.Page;
+import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.record.GetRecords;
 import uk.co.brotherlogic.mdb.record.Record;
 import uk.co.brotherlogic.mdb.record.Track;
 
-public class RecordPage extends Page {
+public class RecordPage extends TemplatePage {
 	@Override
-	public String buildPage(Map<String, String> params) throws IOException {
+	protected Map<String,Object> convertParams(List<String> elems, Map<String, String> params) {
+		Map<String, Object> paramMap = new TreeMap<String, Object>();
+		
 		try {
 			int recordID = Integer.parseInt(params.get("id"));
 			Record record = GetRecords.create().getRecord(recordID);
 
-			Map<String, Object> paramMap = new TreeMap<String, Object>();
+			
 			paramMap.put("record", record);
 			paramMap.put("artistmap", splitArtists(record));
 
-			return buildPageFromTemplate(paramMap);
 		} catch (SQLException e) {
-			throw new IOException(e);
+			e.printStackTrace();
 		}
+		
+		return paramMap;
 	}
 
 	public Boolean relatedExists(Track track) {
