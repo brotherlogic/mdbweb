@@ -104,6 +104,7 @@
         <version>1.0</version>
         <configuration>
           <server>myserver</server>
+	  <url>http://localhost:8085/manager</url>
         </configuration>
       </plugin>
 
