@@ -4,7 +4,7 @@
   <artifactId>mdbweb</artifactId>
   <packaging>war</packaging>
   <version>0.3-SNAPSHOT</version>
-  <name>jarpur</name>
+  <name>mdbweb</name>
   <url>mdbweb://maven.apache.org</url>
   
   <distributionManagement>
