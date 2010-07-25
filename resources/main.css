@@ -36,6 +36,8 @@ h3{
     margin:0;
 }
 
+
+
 ul{
     margin:0;
     padding:0;
@@ -72,6 +74,10 @@ float:left;
 
 #bold{
     font-weight:bold;
+}
+
+#version{
+	font-size:6pt;
 }
 
 td#track-even{
