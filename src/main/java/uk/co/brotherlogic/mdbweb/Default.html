@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd">
 <head>  	
         <title>Music Database</title>
-        <link rel="stylesheet" href="%%link:resource/main.css%%" media="screen">
+        <link rel="stylesheet" href="resources/main.css" media="screen">
     </head>
   <body
     <body>
@@ -15,11 +15,11 @@
 	<h2>Simon To Listen To:</h2>
 	<ul>
 	<li><a href="%%link:record%%"><div>%%record.getNumber%%: %%record.getAuthor%% - %%record.getTitle%% [%%record.getFormat.getName%%]</div></a></li>
-	<li><a href="%%link:cd%%"><div>%%cd.getNumber%%: %%cd.getAuthor%% - %%cd.getTitle%% [%%cd.getFormat.getName%%]</div></a></li>
+	<li><a href="%link:cd%"><div>%%cd.getNumber%%: %%cd.getAuthor%% - %%cd.getTitle%% [%%cd.getFormat.getName%%]</div></a></li>
 	</ul>
 	<h2>Simon To Rip:</h2>
 	<ul>
-	<li><a href="%%link:rip%%"><div>%%rip.getNumber%%: %%rip.getAuthor%% - %%rip.getTitle%% [%%rip.getFormat.getName%%]</div></a></li>
+	<li><a href="%link:rip%"><div>%%rip.getNumber%%: %%rip.getAuthor%% - %%rip.getTitle%% [%%rip.getFormat.getName%%]</div></a></li>
 	</ul>
 </div>
 <div id="boxed">

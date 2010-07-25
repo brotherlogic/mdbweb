@@ -16,13 +16,23 @@ import uk.co.brotherlogic.mdb.record.GetRecords;
 import uk.co.brotherlogic.mdb.record.Record;
 import uk.co.brotherlogic.mdb.record.Track;
 
-public class RecordPage extends TemplatePage {
+public class Default extends TemplatePage {
+	@Override
+	public Class generates() {
+		return Record.class;
+	}
+
+	@Override
+	public String linkParams(Object arg0) {
+		return "" + (((Record)arg0).getNumber());
+	}
+
 	@Override
 	protected Map<String,Object> convertParams(List<String> elems, Map<String, String> params) {
 		Map<String, Object> paramMap = new TreeMap<String, Object>();
 		
 		try {
-			int recordID = Integer.parseInt(params.get("id"));
+			int recordID = Integer.parseInt(elems.get(0));
 			Record record = GetRecords.create().getRecord(recordID);
 
 			

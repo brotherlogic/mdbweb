@@ -14,6 +14,18 @@ import uk.co.brotherlogic.mdb.artist.GetArtists;
 public class ArtistSearchPage extends TemplatePage
 {
 	@Override
+	public Class generates() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String linkParams(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	protected Map<String,Object> convertParams(List<String> elems, Map<String, String> params) 
 	{
 		Map<String, Object> paramMap = new TreeMap<String, Object>();
