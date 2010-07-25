@@ -53,8 +53,8 @@
   </dependencies>
   
   <scm>
-    <connection>scm:git:git://github.com/BrotherLogic/Jarpur.git</connection>
-    <url>scm:git:git://github.com/BrotherLogic/Jarpur.git</url>
+    <connection>scm:git:git://github.com/BrotherLogic/mdbweb.git</connection>
+    <url>scm:git:git://github.com/BrotherLogic/mdbweb.git</url>
   </scm>
 
 <build>
