@@ -42,12 +42,12 @@
     </dependency>
         <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
-      <version>0.5</version>
+      <version>0.6-SNAPSHOT</version>
       <artifactId>mdbcore</artifactId>
     </dependency>
       <dependency>
       <groupId>uk.co.brotherlogic.jarpur</groupId>
-      <version>0.4</version>
+      <version>0.3-SNAPSHOT</version>
       <artifactId>jarpur</artifactId>
     </dependency>
   </dependencies>
@@ -104,6 +104,7 @@
         <version>1.0</version>
         <configuration>
           <server>myserver</server>
+	  <url>http://localhost:8085/manager</url>
         </configuration>
       </plugin>
 
