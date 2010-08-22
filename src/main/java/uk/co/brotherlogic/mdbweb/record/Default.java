@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.jarpur.TemplatePage;
+import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.record.GetRecords;
 import uk.co.brotherlogic.mdb.record.Record;
@@ -38,6 +39,8 @@ public class Default extends TemplatePage {
 			
 			paramMap.put("record", record);
 			paramMap.put("artistmap", splitArtists(record));
+			paramMap.put("sscore",record.getScore(User.getUser("simon")));
+			paramMap.put("jscore",record.getScore(User.getUser("jeanette")));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
