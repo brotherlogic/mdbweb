@@ -1,6 +1,5 @@
 package uk.co.brotherlogic.mdbweb.record;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.artist.Artist;
@@ -19,34 +17,34 @@ import uk.co.brotherlogic.mdb.record.Track;
 
 public class Default extends TemplatePage {
 	@Override
+	protected Map<String, Object> convertParams(List<String> elems,
+			Map<String, String> params) {
+		Map<String, Object> paramMap = new TreeMap<String, Object>();
+
+		try {
+			int recordID = Integer.parseInt(elems.get(0));
+			Record record = GetRecords.create().getRecord(recordID);
+
+			paramMap.put("record", record);
+			paramMap.put("artistmap", splitArtists(record));
+			paramMap.put("sscore", record.getScore(User.getUser("simon")));
+			paramMap.put("jscore", record.getScore(User.getUser("jeanette")));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return paramMap;
+	}
+
+	@Override
 	public Class generates() {
 		return Record.class;
 	}
 
 	@Override
 	public String linkParams(Object arg0) {
-		return "" + (((Record)arg0).getNumber());
-	}
-
-	@Override
-	protected Map<String,Object> convertParams(List<String> elems, Map<String, String> params) {
-		Map<String, Object> paramMap = new TreeMap<String, Object>();
-		
-		try {
-			int recordID = Integer.parseInt(elems.get(0));
-			Record record = GetRecords.create().getRecord(recordID);
-
-			
-			paramMap.put("record", record);
-			paramMap.put("artistmap", splitArtists(record));
-			paramMap.put("sscore",record.getScore(User.getUser("simon")));
-			paramMap.put("jscore",record.getScore(User.getUser("jeanette")));
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return paramMap;
+		return "" + (((Record) arg0).getNumber());
 	}
 
 	public Boolean relatedExists(Track track) {
