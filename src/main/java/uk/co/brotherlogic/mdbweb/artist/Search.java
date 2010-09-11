@@ -11,7 +11,7 @@ import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.artist.GetArtists;
 
-public class ArtistSearchPage extends TemplatePage
+public class Search extends TemplatePage
 {
 	@Override
 	public Class generates() {
@@ -34,6 +34,8 @@ public class ArtistSearchPage extends TemplatePage
 			String query = params.get("q");
 			List<Artist> artists = GetArtists.create().search(query);
 
+			System.err.println("Found " + artists.size() + " artists");
+			
 			paramMap.put("artists", artists);
 			paramMap.put("query", query);
 
@@ -45,10 +47,4 @@ public class ArtistSearchPage extends TemplatePage
 		return paramMap;
 	}
 
-	public static void main(String[] args) throws Exception
-	{
-		Artist art = GetArtists.create().getArtist(43087);
-		System.err.println(art.getShowName());
-		System.err.println(art.getRecords());
-	}
 }

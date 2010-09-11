@@ -40,14 +40,14 @@
       <version>2.0</version>
       <scope>provided</scope>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
-      <version>0.5.9</version>
+      <version>LATEST</version>
       <artifactId>mdbcore</artifactId>
     </dependency>
       <dependency>
       <groupId>uk.co.brotherlogic.jarpur</groupId>
-      <version>0.4</version>
+      <version>LATEST</version>
       <artifactId>jarpur</artifactId>
     </dependency>
   </dependencies>
