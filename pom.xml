@@ -40,7 +40,7 @@
       <version>2.0</version>
       <scope>provided</scope>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
       <version>LATEST</version>
       <artifactId>mdbcore</artifactId>
