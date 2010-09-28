@@ -38,7 +38,7 @@ public class Default extends TemplatePage {
 			
 			paramMap.put("cd", cdToListenTo);
 			paramMap.put("record", recToListenTo);
-			paramMap.put("rip", RecordUtils.getRecordToRip());
+			paramMap.put("rip", RecordUtils.getRecordToRip(1).get(0));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
