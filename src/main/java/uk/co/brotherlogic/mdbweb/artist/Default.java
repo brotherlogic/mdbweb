@@ -11,19 +11,18 @@ import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.artist.GetArtists;
 import uk.co.brotherlogic.mdb.label.GetLabels;
 import uk.co.brotherlogic.mdb.label.Label;
+import uk.co.brotherlogic.mdb.record.Record;
 
-public class ArtistPage extends TemplatePage {
+public class Default extends TemplatePage {
 	@Override
 	public Class generates() {
 		// TODO Auto-generated method stub
-		return null;
+		return Artist.class;
 	}
-
 
 	@Override
 	public String linkParams(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return "" + (((Artist)arg0).getId());
 	}
 
 
@@ -31,7 +30,7 @@ public class ArtistPage extends TemplatePage {
 	protected Map<String,Object> convertParams(List<String> strParams,Map<String, String> params)  {
 		Map<String, Object> paramMap = new TreeMap<String, Object>();
 		try {
-			int labelID = Integer.parseInt(params.get("id"));
+			int labelID = Integer.parseInt(strParams.get(0));
 			Artist artist = GetArtists.create().getArtist(labelID);
 
 			paramMap.put("artist", artist);
@@ -42,19 +41,4 @@ public class ArtistPage extends TemplatePage {
 		return paramMap;
 	}
 
-
-	public Boolean sized(Collection col) {
-		System.err.println("COL: " + col);
-		return col.size() > 0;
-	}
-
-	public Boolean unequal(String one, String two) {
-		return !one.equalsIgnoreCase(two);
-	}
-
-	public static void main(String[] args) throws Exception {
-		Label label = GetLabels.create().getLabel(9);
-		System.err.println("Storing label = " + label.getName() + " [" + label
-				+ "]");
-	}
 }

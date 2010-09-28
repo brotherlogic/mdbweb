@@ -35,22 +35,11 @@ public class LabelPage extends TemplatePage {
 			Label label = GetLabels.create().getLabel(labelID);
 
 			paramMap.put("label", label);
-			System.err.println("Storing label = " + label.getName() + " ["
-					+ labelID + "]");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return paramMap;
-	}
-
-	public static void main(String[] args) throws Exception {
-		Label label = GetLabels.create().getLabel(1608);
-		System.err.println("Storing label = " + label.getName() + " [" + label
-				+ "]");
-		for (Record rec : label.getRecords())
-			System.err.println(rec.getAuthor() + " - " + rec.getTitle() + " - "
-					+ rec.getCatNoString());
 	}
 }
