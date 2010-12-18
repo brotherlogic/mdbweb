@@ -3,7 +3,7 @@
   <groupId>uk.co.brotherlogic.mdbweb</groupId>
   <artifactId>mdbweb</artifactId>
   <packaging>war</packaging>
-  <version>0.3.4-SNAPSHOT</version>
+  <version>0.3.7-SNAPSHOT</version>
   <name>mdbweb</name>
   <url>mdbweb://maven.apache.org</url>
   
@@ -42,12 +42,12 @@
     </dependency>
     <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
-      <version>LATEST</version>
+      <version>0.5.25</version>
       <artifactId>mdbcore</artifactId>
     </dependency>
       <dependency>
       <groupId>uk.co.brotherlogic.jarpur</groupId>
-      <version>LATEST</version>
+      <version>0.6</version>
       <artifactId>jarpur</artifactId>
     </dependency>
   </dependencies>
