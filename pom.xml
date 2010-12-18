@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
-      <version>0.5.22</version>
+      <version>0.5.25</version>
       <artifactId>mdbcore</artifactId>
     </dependency>
       <dependency>
