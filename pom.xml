@@ -47,7 +47,7 @@
     </dependency>
       <dependency>
       <groupId>uk.co.brotherlogic.jarpur</groupId>
-      <version>0.6</version>
+      <version>0.7</version>
       <artifactId>jarpur</artifactId>
     </dependency>
   </dependencies>
