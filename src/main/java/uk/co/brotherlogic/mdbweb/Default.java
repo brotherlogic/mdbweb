@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import uk.co.brotherlogic.jarpur.Page;
 import uk.co.brotherlogic.jarpur.TemplatePage;
 import uk.co.brotherlogic.mdb.Connect;
+import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.record.Record;
 import uk.co.brotherlogic.mdb.record.RecordUtils;
 
