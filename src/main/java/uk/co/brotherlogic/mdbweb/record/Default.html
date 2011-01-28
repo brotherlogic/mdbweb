@@ -9,8 +9,8 @@
 <div id="title">
 <div id="boxed">
 <img src="" height=50 width=50 align="left"/>
-   <h1>%%record.getTitle%%</h1>
-   <h2>%%record.getAuthor%%</h2>
+<h1>%%record.getTitle%%</h1>
+<h2>%%record.getAuthor%%</h2>
 </div>
 </div>
 
@@ -41,14 +41,16 @@ Score : %%record.getScore%% => Simon: %%sscore%% Jeanette: %%jscore%%
 </div>
 
 <div id="boxed">
+<ul>
 %%for number in artistmap.keySet%%
-	<li>%%resolve(number)%%</li>   
-    <ul>
-    	%%for artist in artistmap.get(number)%%
-      		<li>%%artist.getShowName%%</li>
-      	%%endfor%%
-    </ul>
+<li>%%number%%</li>   
+  <ul>
+    %%for artist in artistmap.get(number)%%
+    <li>%%artist.getShowName%%</li>
+    %%endfor%%
+  </ul>
 %%endfor%%
+</ul>
 </div>
 </div>
 

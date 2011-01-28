@@ -94,7 +94,47 @@ public class Default extends TemplatePage
 
 	public String resolve(String number)
 	{
-		return number;
+		String[] elems = number.split(",");
+		if (elems.length == 1)
+			return elems[0];
+		
+		String retString = "";
+		int num = Integer.parseInt(elems[0]);
+		int last = Integer.parseInt(elems[0]);
+		for(int i = 1 ; i <= elems.length ; i++)
+		{
+			int nNum = -1;
+			if (i < elems.length)
+			nNum = Integer.parseInt(elems[i]);
+			
+			if (nNum == last + 1)
+			{
+				last = nNum;
+			}
+			else
+			{
+				if (num == last)
+				{
+					if (i < elems.length)
+						retString  += last + ",";
+					else
+					retString += last;
+				}
+				else
+					if (i < elems.length)
+					retString += num + "-" + last + ",";
+					else
+						retString += num + "-" + last;
+					
+				
+				num = nNum;
+				last = nNum;
+			}
+		}
+		
+		
+		
+		return retString;
 	}
 
 	private Map<String, List<Artist>> splitArtists(Record rec)
@@ -108,7 +148,7 @@ public class Default extends TemplatePage
 			for (Artist art : track.getPersonnel())
 				if (persToTracks.containsKey(art))
 					persToTracks.put(art, persToTracks.get(art)
-							+ Integer.toString(track.getTrackNumber()));
+							+ "," + Integer.toString(track.getTrackNumber()));
 				else
 					persToTracks.put(art, Integer.toString(track
 							.getTrackNumber()));
