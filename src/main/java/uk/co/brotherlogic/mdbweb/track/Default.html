@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Track: %%trackname%%</title>
-        <link rel="stylesheet" href="%%link:resource/main.css%%" media="screen">
+        <link rel="stylesheet" href="/mdbweb/resources/main.css" media="screen">
     </head>
   <body>
 
@@ -15,7 +15,7 @@
 <table width=80%>
 %%for record in records%%
       <tr>
-   <td>%%record.getAuthor%%</td>
+   <td>%%getTrackAuthor(record)%%</td>
    <td><a href="%%link:record%%">%%record.getTitle%%</a></td>
    <td>%%record.getFormat.getName%%</td>
    </tr>

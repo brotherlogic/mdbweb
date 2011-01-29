@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<TITLE>Yearly Purchases</TITLE>
+<link rel="stylesheet" href="resources/main.css" media="screen">
+</HEAD>
+<BODY>
+<div id="title">
+<div id="boxed">
+<H1>%%Year%% Purchases for %%Person%%</H1>
+</div>
+</div>
+
+<div id="boxed">
+<table width=80%>
+%%for record in records%%
+      <tr>
+   <td>%%record.getAuthor%%</td>
+   <td><a href="%%link:record%%">%%record.getTitle%%</a></td>
+   <td>%%record.getFormat.getName%%</td>
+   <td>%%record.getScore%%</td>
+   </tr>
+%%endfor%%
+   </table>
+   </div>
