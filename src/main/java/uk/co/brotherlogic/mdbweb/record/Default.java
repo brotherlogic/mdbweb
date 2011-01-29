@@ -27,7 +27,7 @@ public class Default extends TemplatePage
 		{
 			int recordID = Integer.parseInt(elems.get(0));
 			Record record = GetRecords.create().getRecord(recordID);
-
+			
 			paramMap.put("record", record);
 			paramMap.put("artistmap", splitArtists(record));
 			paramMap.put("sscore", record.getScore(User.getUser("simon")));

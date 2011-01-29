@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>  	
         <title>Label: %%label.getName%%</title>
-        <link rel="stylesheet" href="/jarpur/resource/main.css" media="screen">
+        <link rel="stylesheet" href="/mdbweb/resources/main.css" media="screen">
     </head>
     <body>
 <div id="title">
@@ -12,11 +12,11 @@
 </div>
 <div id="boxed">
 <table width=80%>
-%%for record in label.getRecords%%
+%%for record in sort(label.getRecords)%%
    <tr>
    		<td wicket:id="catno">%%record.getCatNoString%%</td>
    		<td wicket:id="author">%%record.getAuthor%%</td>
-   		<td wicket:id="title">%%record.getTitle%%</td>
+   		<td><A HREF="%%link:record%%">%%record.getTitle%%</A></td>
    </tr>
 %%endfor%%
    </table>

@@ -27,7 +27,7 @@ Score : %%record.getScore%% => Simon: %%sscore%% Jeanette: %%jscore%%
    <li>%%record.getReleaseYear%%</li>
    <li id="bold">Label:</li>
    %%for label in record.getLabels%%
-      <li>%%label.getName%%</li>
+      <li><A HREF="%%link:label%%">%%label.getName%%</A></li>
    %%endfor%%	
    <li id="bold">Cat Nos:</li>
    %%for catno in record.getCatNos%%
