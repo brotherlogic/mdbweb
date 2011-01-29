@@ -42,12 +42,12 @@
     </dependency>
     <dependency>
       <groupId>uk.co.brotherlogic.mdb</groupId>
-      <version>0.5.30</version>
+      <version>0.5.31</version>
       <artifactId>mdbcore</artifactId>
     </dependency>
       <dependency>
       <groupId>uk.co.brotherlogic.jarpur</groupId>
-      <version>0.7</version>
+      <version>0.8-SNAPSHOT</version>
       <artifactId>jarpur</artifactId>
     </dependency>
   </dependencies>
