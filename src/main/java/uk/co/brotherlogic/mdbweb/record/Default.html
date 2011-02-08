@@ -43,7 +43,7 @@ Score : %%record.getScore%% => Simon: %%sscore%% Jeanette: %%jscore%%
 <div id="boxed">
 <ul>
 %%for number in artistmap.keySet%%
-<li>%%number%%</li>   
+<li>%%resolve(number)%%</li>   
   <ul>
     %%for artist in artistmap.get(number)%%
     <li>%%artist.getShowName%%</li>
