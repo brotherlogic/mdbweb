@@ -16,148 +16,170 @@ import uk.co.brotherlogic.mdb.record.GetRecords;
 import uk.co.brotherlogic.mdb.record.Record;
 import uk.co.brotherlogic.mdb.record.Track;
 
-public class Default extends TemplatePage {
-	@Override
-	protected Map<String, Object> convertParams(List<String> elems,
-			Map<String, String> params) {
-		Map<String, Object> paramMap = new TreeMap<String, Object>();
+public class Default extends TemplatePage
+{
+   @Override
+   protected Map<String, Object> convertParams(List<String> elems, Map<String, String> params)
+   {
+      Map<String, Object> paramMap = new TreeMap<String, Object>();
 
-		try {
-			int recordID = Integer.parseInt(elems.get(0));
-			Record record = GetRecords.create().getRecord(recordID);
+      try
+      {
+         int recordID = Integer.parseInt(elems.get(0));
+         Record record = GetRecords.create().getRecord(recordID);
 
-			paramMap.put("record", record);
-			paramMap.put("artistmap", splitArtists(record));
-			paramMap.put("sscore", record.getScore(User.getUser("simon")));
-			paramMap.put("jscore", record.getScore(User.getUser("jeanette")));
+         paramMap.put("record", record);
+         paramMap.put("artistmap", splitArtists(record));
+         paramMap.put("sscore", record.getScore(User.getUser("simon")));
+         paramMap.put("jscore", record.getScore(User.getUser("jeanette")));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+      }
+      catch (SQLException e)
+      {
+         e.printStackTrace();
+      }
 
-		return paramMap;
-	}
+      return paramMap;
+   }
 
-	public String convertTime(int timeIn) {
-		if (timeIn <= 0)
-			return "";
+   public String convertTime(int timeIn)
+   {
+      if (timeIn <= 0)
+         return "";
 
-		int hours = timeIn / (60 * 60);
-		int minutes = (timeIn - hours * 60 * 60) / 60;
-		int seconds = (timeIn - hours * 60 * 60 - minutes * 60);
+      int hours = timeIn / (60 * 60);
+      int minutes = (timeIn - hours * 60 * 60) / 60;
+      int seconds = (timeIn - hours * 60 * 60 - minutes * 60);
 
-		if (hours > 0)
-			return hours + ":" + pad(minutes) + ":" + pad(seconds);
-		else
-			return pad(minutes) + ":" + pad(seconds);
-	}
+      if (hours > 0)
+         return hours + ":" + pad(minutes) + ":" + pad(seconds);
+      else
+         return pad(minutes) + ":" + pad(seconds);
+   }
 
-	@Override
-	public Class generates() {
-		return Record.class;
-	}
+   @Override
+   public Class generates()
+   {
+      return Record.class;
+   }
 
-	@Override
-	public String linkParams(Object arg0) {
-		return "" + (((Record) arg0).getNumber());
-	}
+   public boolean mismatch(Track t, Record r)
+   {
+      return !t.getTrackAuthor().equals(r.getAuthor());
+   }
 
-	private String pad(int num) {
-		if (num > 9)
-			return "" + num;
-		else
-			return "0" + num;
-	}
+   @Override
+   public String linkParams(Object arg0)
+   {
+      return "" + (((Record) arg0).getNumber());
+   }
 
-	public Boolean relatedExists(Track track) {
-		try {
+   private String pad(int num)
+   {
+      if (num > 9)
+         return "" + num;
+      else
+         return "0" + num;
+   }
 
-			return GetRecords.create().getRecordsWithTrack(track.getTitle())
-					.size() > 1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+   public Boolean relatedExists(Track track)
+   {
+      try
+      {
 
-	public String resolve(String number) {
-		String[] elems = number.split(",");
-		if (elems.length == 1)
-			return elems[0];
+         return GetRecords.create().getRecordsWithTrack(track.getTitle()).size() > 1;
+      }
+      catch (SQLException e)
+      {
+         e.printStackTrace();
+      }
+      return false;
+   }
 
-		String retString = "";
-		int num = Integer.parseInt(elems[0]);
-		int last = Integer.parseInt(elems[0]);
-		for (int i = 1; i <= elems.length; i++) {
-			int nNum = -1;
-			if (i < elems.length)
-				nNum = Integer.parseInt(elems[i]);
+   public String resolve(String number)
+   {
+      String[] elems = number.split(",");
+      if (elems.length == 1)
+         return elems[0];
 
-			if (nNum == last + 1) {
-				last = nNum;
-			} else {
-				if (num == last) {
-					if (i < elems.length)
-						retString += last + ",";
-					else
-						retString += last;
-				} else if (i < elems.length)
-					retString += num + "-" + last + ",";
-				else
-					retString += num + "-" + last;
+      String retString = "";
+      int num = Integer.parseInt(elems[0]);
+      int last = Integer.parseInt(elems[0]);
+      for (int i = 1; i <= elems.length; i++)
+      {
+         int nNum = -1;
+         if (i < elems.length)
+            nNum = Integer.parseInt(elems[i]);
 
-				num = nNum;
-				last = nNum;
-			}
-		}
+         if (nNum == last + 1)
+         {
+            last = nNum;
+         }
+         else
+         {
+            if (num == last)
+            {
+               if (i < elems.length)
+                  retString += last + ",";
+               else
+                  retString += last;
+            }
+            else if (i < elems.length)
+               retString += num + "-" + last + ",";
+            else
+               retString += num + "-" + last;
 
-		return retString;
-	}
+            num = nNum;
+            last = nNum;
+         }
+      }
 
-	private Map<String, List<Artist>> splitArtists(Record rec)
-			throws SQLException {
-		Map<String, List<Artist>> ret = new TreeMap<String, List<Artist>>(
-				new Comparator<String>() {
+      return retString;
+   }
 
-					@Override
-					public int compare(String arg0, String arg1) {
-						String[] elems0 = arg0.split(",");
-						String[] elems1 = arg1.split(",");
+   private Map<String, List<Artist>> splitArtists(Record rec) throws SQLException
+   {
+      Map<String, List<Artist>> ret = new TreeMap<String, List<Artist>>(new Comparator<String>()
+      {
 
-						for (int i = 0; i < Math.min(elems0.length,
-								elems1.length); i++) {
-							Integer int0 = Integer.parseInt(elems0[0]);
-							Integer int1 = Integer.parseInt(elems1[0]);
+         @Override
+         public int compare(String arg0, String arg1)
+         {
+            String[] elems0 = arg0.split(",");
+            String[] elems1 = arg1.split(",");
 
-							if (int0 != int1)
-								return int0.compareTo(int1);
-						}
+            for (int i = 0; i < Math.min(elems0.length, elems1.length); i++)
+            {
+               Integer int0 = Integer.parseInt(elems0[0]);
+               Integer int1 = Integer.parseInt(elems1[0]);
 
-						return elems0.length - elems1.length;
-					}
+               if (int0 != int1)
+                  return int0.compareTo(int1);
+            }
 
-				});
+            return elems0.length - elems1.length;
+         }
 
-		// First create a map from personnel to tracks
-		Map<Artist, String> persToTracks = new HashMap<Artist, String>();
-		for (Track track : rec.getTracks())
-			for (Artist art : track.getPersonnel())
-				if (persToTracks.containsKey(art))
-					persToTracks.put(
-							art,
-							persToTracks.get(art) + ","
-									+ Integer.toString(track.getTrackNumber()));
-				else
-					persToTracks.put(art,
-							Integer.toString(track.getTrackNumber()));
+      });
 
-		// Now transform into the return set
-		for (Entry<Artist, String> arts : persToTracks.entrySet()) {
-			if (!ret.containsKey(arts.getValue()))
-				ret.put(arts.getValue(), new LinkedList<Artist>());
-			ret.get(arts.getValue()).add(arts.getKey());
-		}
+      // First create a map from personnel to tracks
+      Map<Artist, String> persToTracks = new HashMap<Artist, String>();
+      for (Track track : rec.getTracks())
+         for (Artist art : track.getPersonnel())
+            if (persToTracks.containsKey(art))
+               persToTracks.put(art,
+                     persToTracks.get(art) + "," + Integer.toString(track.getTrackNumber()));
+            else
+               persToTracks.put(art, Integer.toString(track.getTrackNumber()));
 
-		return ret;
-	}
+      // Now transform into the return set
+      for (Entry<Artist, String> arts : persToTracks.entrySet())
+      {
+         if (!ret.containsKey(arts.getValue()))
+            ret.put(arts.getValue(), new LinkedList<Artist>());
+         ret.get(arts.getValue()).add(arts.getKey());
+      }
+
+      return ret;
+   }
 }
