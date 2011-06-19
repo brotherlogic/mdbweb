@@ -3,7 +3,7 @@
   <groupId>uk.co.brotherlogic.mdbweb</groupId>
   <artifactId>mdbweb</artifactId>
   <packaging>war</packaging>
-  <version>0.3.21</version>
+  <version>0.3.22-SNAPSHOT</version>
   <name>mdbweb</name>
   <url>mdbweb://maven.apache.org</url>
   
