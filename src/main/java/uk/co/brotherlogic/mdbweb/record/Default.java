@@ -65,7 +65,25 @@ public class Default extends TemplatePage
 
    public boolean mismatch(Track t, Record r)
    {
-      return !t.getTrackAuthor().equals(r.getAuthor());
+      String[] tWords = t.getSortedTrackAuthor().replaceAll("[^0-9A-Za-z\\s]", "").split("\\s+");
+      String[] rWords = r.getAuthor().replaceAll("[^0-9A-Za-z\\s]", "").split("\\s+");
+
+      boolean match = true;
+      for (int i = 0; i < rWords.length; i++)
+      {
+         boolean found = false;
+         for (int j = 0; j < tWords.length; j++)
+            if (rWords[i].equals(tWords[j]))
+               found = true;
+         if (!found)
+         {
+            System.err.println("NO MATCH = " + rWords[i]);
+            match = false;
+         }
+      }
+
+      return !match;
+
    }
 
    @Override
