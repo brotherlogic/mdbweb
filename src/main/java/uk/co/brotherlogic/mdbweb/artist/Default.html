@@ -13,7 +13,7 @@
 	<div id="boxed">
 		
 		<table width=80%>
- 		%%for record in artist.getGroopMemberRecords%%
+ 		%%for record in records%%
     	  	<tr>
    				<td>%%if unequal(record.getAuthor,artist.getSortName)%% %%record.getAuthor%% %%endif%%</td>
    				<td wicket:id="title"><a href="%%link:record%%">%%record.getTitle%%</a></td>
