@@ -60,7 +60,7 @@ Score : %%record.getScore%% => Simon: %%sscore%% Jeanette: %%jscore%%
 	%%for track in record.getTracks%%   
 		<TR>
 			<TD valign="top" id="track-odd">%%track.getTrackNumber%%</TD>
-			<TD valign="top" id="track-odd"><A %%if relatedExists(track)%% href="%%link:track%%" %%endif%%>%%track.getTitle%%</A></TD>
+			<TD valign="top" id="track-odd"><A %%if relatedExists(track)%% href="%%link:track%%" %%endif%%>%%track.getTitle%%</A>%%if mismatch(track,record)%%<BR/>%%track.getTrackAuthor%%%%endif%%</TD>
 			<TD valign="top" id="track-odd">%%convertTime(track.getLengthInSeconds)%%</TD>
 		</TR>
 	%%endfor%%
