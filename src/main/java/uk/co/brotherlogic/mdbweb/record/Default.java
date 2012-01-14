@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import uk.co.brotherlogic.jarpur.TemplatePage;
+import uk.co.brotherlogic.mdb.Connect;
 import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.record.GetRecords;
@@ -34,6 +35,9 @@ public class Default extends TemplatePage
          {
             System.out.println("FOUND SCORE");
             record.addScore(User.getUser("simon"), Integer.parseInt(params.get("score")));
+
+            // Fix the score in the database
+            Connect.getConnection().commitTrans();
          }
 
          paramMap.put("record", record);
