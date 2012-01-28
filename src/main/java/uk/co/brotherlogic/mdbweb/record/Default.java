@@ -1,6 +1,7 @@
 package uk.co.brotherlogic.mdbweb.record;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import uk.co.brotherlogic.jarpur.TemplatePage;
+import uk.co.brotherlogic.mdb.Connect;
 import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.record.GetRecords;
@@ -28,10 +30,22 @@ public class Default extends TemplatePage
          int recordID = Integer.parseInt(elems.get(0));
          Record record = GetRecords.create().getRecord(recordID);
 
+         // Have we tried to score the record?
+         if (params.containsKey("score"))
+         {
+            System.out.println("FOUND SCORE");
+            record.addScore(User.getUser("simon"), Integer.parseInt(params.get("score")));
+
+            // Fix the score in the database
+            Connect.getConnection().commitTrans();
+         }
+
          paramMap.put("record", record);
          paramMap.put("artistmap", splitArtists(record));
          paramMap.put("sscore", record.getScore(User.getUser("simon")));
-         paramMap.put("jscore", record.getScore(User.getUser("jeanette")));
+         paramMap.put("scorecount", record.getScoreCount(User.getUser("simon")));
+         DateFormat df = DateFormat.getDateInstance();
+         paramMap.put("scoredate", df.format(record.getLastScoreDate(User.getUser("simon"))));
 
       }
       catch (SQLException e)
