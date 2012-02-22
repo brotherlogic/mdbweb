@@ -16,6 +16,7 @@ import uk.co.brotherlogic.mdb.User;
 import uk.co.brotherlogic.mdb.artist.Artist;
 import uk.co.brotherlogic.mdb.record.GetRecords;
 import uk.co.brotherlogic.mdb.record.Record;
+import uk.co.brotherlogic.mdb.record.RecordScore;
 import uk.co.brotherlogic.mdb.record.Track;
 
 public class Default extends TemplatePage
@@ -42,7 +43,7 @@ public class Default extends TemplatePage
 
          paramMap.put("record", record);
          paramMap.put("artistmap", splitArtists(record));
-         paramMap.put("sscore", record.getScore(User.getUser("simon")));
+         paramMap.put("sscore", RecordScore.getLastScore(record, User.getUser("simon")));
          paramMap.put("scorecount", record.getScoreCount(User.getUser("simon")));
          DateFormat df = DateFormat.getDateInstance();
          paramMap.put("scoredate", df.format(record.getLastScoreDate(User.getUser("simon"))));
