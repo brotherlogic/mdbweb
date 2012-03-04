@@ -37,8 +37,11 @@ public class Default extends TemplatePage
          { "12" });
          Record cdToListenTo = RecordUtils.getRecordToListenTo(new String[]
          { "CD" });
+         Record sevenToListenTo = RecordUtils.getRecordToListenTo(new String[]
+         { "7" });
 
          paramMap.put("cd", cdToListenTo);
+         paramMap.put("seven", sevenToListenTo);
          paramMap.put("record", recToListenTo);
          paramMap.put("rip", RecordUtils.getRecordToRip(1).get(0));
          paramMap.put("coreversion", Connect.getConnection().getVersionString());
