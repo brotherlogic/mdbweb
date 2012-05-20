@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>  	
+        <title>Ranking</title>
+        <link rel="stylesheet" href="/mdbweb/resources/main.css" media="screen">
+    </head>
+<body>
+    
+<div id="title">
+<div id="boxed">
+<h1>Ranking:  %%togo%% / %%done%%</h1>
+</div>
+</div>
+
+<div id="boxed">
+<TABLE>
+%%for record in records%%
+<TR>
+<TD>%%record.getAuthor%%</TD>
+<TD>%%record.getTitle%%</TD>
+<TD>%%record.getScore%%</TD>
+</TR>
+%%endfor%%
+</TABLE>
+</DIV>  
+</BODY>
+</HTML>
